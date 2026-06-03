@@ -723,19 +723,108 @@ document.getElementById('globalSearch').addEventListener('input',function(){
 
 // Modal
 function openAPIModal(t){
-  document.getElementById('modalIcon').textContent=t.icon;
-  document.getElementById('modalTitle').textContent=t.name;
-  document.getElementById('modalSub').textContent='Powered by FastAPI backend';
-  document.getElementById('modalBody').innerHTML=`
-    <div class="coming-soon">
-      <div class="cs-icon">${t.icon}</div>
-      <h3>${t.name}</h3>
-      <p>This tool is live! Upload your file below to process it via our FastAPI backend.</p>
-      <div class="api-tag">LIVE · toolforge-api-o6q8.onrender.com</div>
+  const endpointMap = {
+    'pdf-to-word': '/api/pdf/to-word',
+    'word-to-pdf': '/api/pdf/from-word',
+    'pdf-to-excel': '/api/pdf/to-excel',
+    'pdf-to-ppt': '/api/pdf/to-ppt',
+    'merge-pdf': '/api/pdf/merge',
+    'split-pdf': '/api/pdf/split',
+    'compress-pdf': '/api/pdf/compress',
+    'add-password': '/api/pdf/encrypt',
+    'remove-password': '/api/pdf/decrypt',
+    'rotate-pdf': '/api/pdf/rotate',
+    'pdf-to-image': '/api/pdf/to-image',
+    'image-to-pdf': '/api/image/to-pdf',
+    'add-watermark': '/api/pdf/watermark',
+    'fill-sign': '/api/pdf/fill-sign',
+    'compress-image': '/api/image/compress',
+    'resize-crop': '/api/image/resize',
+    'convert-format': '/api/image/convert',
+    'remove-bg': '/api/image/remove-bg',
+    'upscale-image': '/api/image/upscale',
+    'add-watermark-img': '/api/image/watermark',
+    'collage': '/api/image/collage',
+    'video-compress': '/api/media/compress-video',
+    'video-convert': '/api/media/convert-video',
+    'extract-audio': '/api/media/extract-audio',
+    'audio-convert': '/api/media/convert-audio',
+    'gif-maker': '/api/media/gif',
+    'trim-video': '/api/media/trim',
+    'volume-boost': '/api/media/volume-boost',
+    'url-shortener': '/api/utils/shorten-url',
+  };
+
+  const endpoint = endpointMap[t.id] || '';
+  const multiFile = ['merge-pdf','collage','image-to-pdf'].includes(t.id);
+
+  document.getElementById('modalIcon').textContent = t.icon;
+  document.getElementById('modalTitle').textContent = t.name;
+  document.getElementById('modalSub').textContent = 'Powered by FastAPI backend';
+  document.getElementById('modalBody').innerHTML = `
+    <div id="dropZone" style="border:2px dashed var(--border2);border-radius:14px;padding:40px;text-align:center;cursor:pointer;transition:all 0.2s" 
+      onclick="document.getElementById('fileInput').click()"
+      ondragover="event.preventDefault();this.style.borderColor='var(--accent)'"
+      ondragleave="this.style.borderColor='var(--border2)'"
+      ondrop="event.preventDefault();this.style.borderColor='var(--border2)';handleModalDrop(event)">
+      <div style="font-size:2.5rem;margin-bottom:12px">${t.icon}</div>
+      <div style="font-size:1rem;font-weight:600;color:var(--text);margin-bottom:6px">Drop your file here or <span style="color:var(--accent)">browse</span></div>
+      <div style="font-size:0.78rem;color:var(--text3)">Max 50MB · Free & secure</div>
+      <input type="file" id="fileInput" style="display:none" ${multiFile?'multiple':''} onchange="handleModalFile(event)">
     </div>
+    <div id="modalProgress" style="display:none;margin-top:16px">
+      <div style="display:flex;justify-content:space-between;font-size:0.78rem;color:var(--text3);font-family:var(--font-mono);margin-bottom:6px">
+        <span id="modalProgressLabel">Uploading...</span>
+        <span id="modalProgressPct">0%</span>
+      </div>
+      <div style="background:var(--bg3);border-radius:4px;height:6px;overflow:hidden">
+        <div id="modalProgressBar" style="width:0%;height:100%;background:var(--accent);border-radius:4px;transition:width 0.3s"></div>
+      </div>
+    </div>
+    <div id="modalResult" style="margin-top:12px"></div>
   `;
+
+  window._modalEndpoint = endpoint;
+  window._modalMulti = multiFile;
   document.getElementById('modalOverlay').classList.add('open');
 }
+
+window.handleModalDrop = function(e) {
+  handleModalFiles(e.dataTransfer.files);
+};
+window.handleModalFile = function(e) {
+  handleModalFiles(e.target.files);
+};
+window.handleModalFiles = function(fileList) {
+  const files = Array.from(fileList);
+  if(!files.length) return;
+  document.getElementById('modalProgress').style.display = 'block';
+  document.getElementById('modalResult').innerHTML = '';
+
+  ToolForgeAPI.upload({
+    endpoint: window._modalEndpoint,
+    file: window._modalMulti ? null : files[0],
+    files: window._modalMulti ? files : null,
+    onProgress: (pct) => {
+      if(pct === -1){
+        document.getElementById('modalProgressLabel').textContent = 'Still processing... (server warming up)';
+        return;
+      }
+      document.getElementById('modalProgressBar').style.width = pct + '%';
+      document.getElementById('modalProgressPct').textContent = pct + '%';
+      document.getElementById('modalProgressLabel').textContent = pct < 100 ? 'Uploading...' : 'Processing on server...';
+    },
+    onSuccess: (blob, filename) => {
+      document.getElementById('modalProgress').style.display = 'none';
+      document.getElementById('modalResult').innerHTML = `<div style="text-align:center;padding:16px;background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.2);border-radius:12px;color:var(--accent3)">✅ Done! Downloading <strong>${filename}</strong></div>`;
+      ToolForgeAPI.download(blob, filename);
+    },
+    onError: (msg) => {
+      document.getElementById('modalProgress').style.display = 'none';
+      document.getElementById('modalResult').innerHTML = `<div style="text-align:center;padding:16px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:12px;color:#ef4444">❌ ${msg}</div>`;
+    }
+  });
+};
 
 function openModal(icon,title,sub,html){
   document.getElementById('modalIcon').textContent=icon;
