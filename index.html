@@ -1,0 +1,1986 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ToolForge — 65 Free Online Tools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+:root {
+  --bg: #080c14;
+  --bg2: #0d1220;
+  --bg3: #111827;
+  --surface: #141c2e;
+  --surface2: #1a243a;
+  --border: rgba(99,179,237,0.12);
+  --border2: rgba(99,179,237,0.22);
+  --accent: #38bdf8;
+  --accent2: #818cf8;
+  --accent3: #34d399;
+  --accent4: #fb923c;
+  --accent5: #f472b6;
+  --text: #e2e8f0;
+  --text2: #94a3b8;
+  --text3: #64748b;
+  --glow: 0 0 30px rgba(56,189,248,0.15);
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100vh;overflow-x:hidden}
+
+/* Animated grid background */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(56,189,248,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(56,189,248,0.03) 1px,transparent 1px);
+  background-size:60px 60px;pointer-events:none;z-index:0;
+}
+body::after{
+  content:'';position:fixed;inset:0;
+  background:radial-gradient(ellipse 80% 50% at 50% -20%,rgba(56,189,248,0.08) 0%,transparent 60%);
+  pointer-events:none;z-index:0;
+}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(8,12,20,0.85);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 2rem;height:64px;
+}
+.nav-logo{
+  font-family:var(--font-display);font-size:1.4rem;font-weight:800;
+  color:var(--text);letter-spacing:-0.02em;text-decoration:none;
+  display:flex;align-items:center;gap:8px;
+}
+.nav-logo span{color:var(--accent)}
+.logo-badge{
+  font-size:0.55rem;font-family:var(--font-mono);font-weight:500;
+  background:rgba(56,189,248,0.12);color:var(--accent);
+  border:1px solid rgba(56,189,248,0.25);
+  padding:2px 6px;border-radius:4px;letter-spacing:0.05em;
+}
+.nav-search{
+  display:flex;align-items:center;gap:10px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:0 14px;height:40px;width:320px;
+  transition:border-color 0.2s,box-shadow 0.2s;
+}
+.nav-search:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(56,189,248,0.1)}
+.nav-search svg{color:var(--text3);flex-shrink:0}
+.nav-search input{background:none;border:none;outline:none;color:var(--text);font-family:var(--font-body);font-size:0.875rem;width:100%}
+.nav-search input::placeholder{color:var(--text3)}
+.nav-actions{display:flex;align-items:center;gap:12px}
+.btn-ghost{
+  background:none;border:1px solid var(--border);color:var(--text2);
+  padding:8px 16px;border-radius:8px;cursor:pointer;font-family:var(--font-body);
+  font-size:0.85rem;transition:all 0.2s;
+}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent);background:rgba(56,189,248,0.05)}
+
+/* HERO */
+.hero{
+  position:relative;z-index:1;
+  padding:140px 2rem 80px;text-align:center;
+  max-width:900px;margin:0 auto;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-mono);font-size:0.75rem;font-weight:500;
+  color:var(--accent);letter-spacing:0.1em;text-transform:uppercase;
+  background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.2);
+  padding:6px 14px;border-radius:100px;margin-bottom:28px;
+  animation:fadeUp 0.6s ease both;
+}
+.hero-eyebrow::before{content:'●';font-size:0.5rem;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.hero h1{
+  font-family:var(--font-display);font-size:clamp(2.8rem,6vw,5rem);
+  font-weight:800;line-height:1.05;letter-spacing:-0.03em;
+  color:var(--text);margin-bottom:20px;
+  animation:fadeUp 0.6s 0.1s ease both;
+}
+.hero h1 .highlight{
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero p{
+  font-size:1.125rem;color:var(--text2);line-height:1.7;max-width:540px;margin:0 auto 40px;
+  animation:fadeUp 0.6s 0.2s ease both;
+}
+.hero-stats{
+  display:flex;justify-content:center;gap:40px;
+  animation:fadeUp 0.6s 0.3s ease both;
+}
+.hero-stat{text-align:center}
+.hero-stat .num{
+  font-family:var(--font-display);font-size:2rem;font-weight:800;color:var(--text);
+  line-height:1;
+}
+.hero-stat .num span{color:var(--accent)}
+.hero-stat .lbl{font-size:0.8rem;color:var(--text3);margin-top:4px;font-family:var(--font-mono)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* CATEGORY NAV */
+.cat-nav{
+  position:sticky;top:64px;z-index:90;
+  background:rgba(8,12,20,0.9);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:0 2rem;
+}
+.cat-nav-inner{
+  display:flex;align-items:center;gap:4px;
+  max-width:1400px;margin:0 auto;overflow-x:auto;
+  scrollbar-width:none;padding:12px 0;
+}
+.cat-nav-inner::-webkit-scrollbar{display:none}
+.cat-btn{
+  display:flex;align-items:center;gap:7px;
+  background:none;border:1px solid transparent;
+  color:var(--text3);font-family:var(--font-body);font-size:0.82rem;font-weight:500;
+  padding:7px 14px;border-radius:8px;cursor:pointer;
+  white-space:nowrap;transition:all 0.2s;
+}
+.cat-btn:hover{color:var(--text);background:var(--surface);border-color:var(--border)}
+.cat-btn.active{color:var(--accent);background:rgba(56,189,248,0.08);border-color:rgba(56,189,248,0.25)}
+.cat-btn .cat-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* MAIN CONTENT */
+.main{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:0 2rem 4rem}
+
+/* SECTION */
+.section{margin-bottom:60px}
+.section-header{
+  display:flex;align-items:center;gap:16px;margin-bottom:24px;
+  padding-bottom:16px;border-bottom:1px solid var(--border);
+}
+.section-icon{
+  width:40px;height:40px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:1.2rem;
+  flex-shrink:0;
+}
+.section-title{
+  font-family:var(--font-display);font-size:1.2rem;font-weight:700;
+  color:var(--text);letter-spacing:-0.01em;
+}
+.section-count{
+  font-size:0.75rem;font-family:var(--font-mono);
+  color:var(--text3);margin-top:2px;
+}
+.section-line{flex:1;height:1px;background:linear-gradient(90deg,var(--border) 0%,transparent 100%)}
+
+/* TOOL GRID */
+.tool-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:14px;
+}
+
+/* TOOL CARD */
+.tool-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;padding:20px;cursor:pointer;
+  transition:all 0.25s cubic-bezier(0.4,0,0.2,1);
+  position:relative;overflow:hidden;
+  animation:cardIn 0.4s ease both;
+}
+.tool-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(56,189,248,0.06) 0%,transparent 60%);
+  opacity:0;transition:opacity 0.3s;pointer-events:none;
+}
+.tool-card:hover{
+  border-color:var(--border2);
+  transform:translateY(-3px);
+  box-shadow:0 12px 40px rgba(0,0,0,0.4),0 0 0 1px rgba(56,189,248,0.1);
+}
+.tool-card:hover::before{opacity:1}
+.tool-card.backend-only{cursor:default}
+.tool-card.backend-only:hover{transform:none}
+@keyframes cardIn{from{opacity:0;transform:scale(0.96)}to{opacity:1;transform:scale(1)}}
+
+.tool-icon{
+  width:44px;height:44px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;margin-bottom:14px;
+  transition:transform 0.2s;
+}
+.tool-card:hover .tool-icon{transform:scale(1.1) rotate(-3deg)}
+.tool-name{
+  font-family:var(--font-display);font-size:0.9rem;font-weight:700;
+  color:var(--text);letter-spacing:-0.01em;margin-bottom:6px;
+  line-height:1.3;
+}
+.tool-desc{font-size:0.78rem;color:var(--text3);line-height:1.5}
+.tool-badge{
+  position:absolute;top:12px;right:12px;
+  font-size:0.6rem;font-family:var(--font-mono);font-weight:500;
+  padding:3px 7px;border-radius:4px;letter-spacing:0.05em;text-transform:uppercase;
+}
+.badge-js{background:rgba(52,211,153,0.12);color:var(--accent3);border:1px solid rgba(52,211,153,0.2)}
+.badge-api{background:rgba(251,146,60,0.12);color:var(--accent4);border:1px solid rgba(251,146,60,0.2)}
+.badge-ai{background:rgba(129,140,248,0.15);color:var(--accent2);border:1px solid rgba(129,140,248,0.25)}
+
+/* MODAL */
+.modal-overlay{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(0,0,0,0.8);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;opacity:0;pointer-events:none;transition:opacity 0.2s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:20px;width:100%;max-width:680px;
+  max-height:85vh;overflow:hidden;
+  display:flex;flex-direction:column;
+  transform:scale(0.95) translateY(10px);transition:transform 0.25s;
+  box-shadow:0 40px 80px rgba(0,0,0,0.6),0 0 0 1px rgba(56,189,248,0.05);
+}
+.modal-overlay.open .modal{transform:scale(1) translateY(0)}
+.modal-header{
+  display:flex;align-items:center;gap:14px;
+  padding:20px 24px;border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.modal-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem}
+.modal-title{font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--text)}
+.modal-subtitle{font-size:0.78rem;color:var(--text3);margin-top:2px}
+.modal-close{
+  margin-left:auto;background:none;border:1px solid var(--border);
+  color:var(--text3);width:34px;height:34px;border-radius:8px;
+  cursor:pointer;font-size:1.1rem;transition:all 0.2s;
+  display:flex;align-items:center;justify-content:center;
+}
+.modal-close:hover{border-color:var(--border2);color:var(--text)}
+.modal-body{padding:24px;overflow-y:auto;flex:1}
+
+/* Form elements in modal */
+.field-label{font-size:0.8rem;font-family:var(--font-mono);color:var(--text3);margin-bottom:8px;display:block;letter-spacing:0.03em}
+.field-row{margin-bottom:16px}
+textarea.tool-input,input.tool-input,select.tool-select{
+  width:100%;background:var(--bg3);border:1px solid var(--border);
+  color:var(--text);font-family:var(--font-mono);font-size:0.85rem;
+  padding:12px 14px;border-radius:10px;outline:none;
+  transition:border-color 0.2s,box-shadow 0.2s;resize:vertical;
+}
+textarea.tool-input{min-height:100px}
+textarea.tool-input:focus,input.tool-input:focus,select.tool-select:focus{
+  border-color:var(--accent);box-shadow:0 0 0 3px rgba(56,189,248,0.08);
+}
+.tool-btn{
+  background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);
+  color:var(--accent);font-family:var(--font-body);font-size:0.875rem;font-weight:500;
+  padding:10px 20px;border-radius:10px;cursor:pointer;
+  transition:all 0.2s;display:inline-flex;align-items:center;gap:8px;
+}
+.tool-btn:hover{background:rgba(56,189,248,0.18);border-color:rgba(56,189,248,0.45)}
+.tool-btn-row{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+.output-box{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:10px;padding:14px;font-family:var(--font-mono);
+  font-size:0.82rem;color:var(--text2);min-height:60px;
+  line-height:1.6;word-break:break-all;position:relative;
+}
+.copy-btn{
+  position:absolute;top:8px;right:8px;
+  background:var(--surface);border:1px solid var(--border);
+  color:var(--text3);font-size:0.7rem;font-family:var(--font-mono);
+  padding:4px 10px;border-radius:6px;cursor:pointer;transition:all 0.2s;
+}
+.copy-btn:hover{color:var(--accent);border-color:rgba(56,189,248,0.3)}
+.result-big{
+  font-family:var(--font-display);font-size:2.5rem;font-weight:800;
+  color:var(--accent);text-align:center;padding:20px;
+}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.coming-soon{
+  text-align:center;padding:40px;
+}
+.coming-soon .cs-icon{font-size:3rem;margin-bottom:16px}
+.coming-soon h3{font-family:var(--font-display);font-size:1.1rem;color:var(--text);margin-bottom:8px}
+.coming-soon p{font-size:0.85rem;color:var(--text3);line-height:1.6}
+.coming-soon .api-tag{
+  display:inline-block;margin-top:12px;
+  font-size:0.72rem;font-family:var(--font-mono);
+  background:rgba(251,146,60,0.1);color:var(--accent4);
+  border:1px solid rgba(251,146,60,0.2);padding:5px 12px;border-radius:6px;
+}
+
+/* FOOTER */
+footer{
+  position:relative;z-index:1;
+  border-top:1px solid var(--border);
+  background:var(--bg2);padding:40px 2rem;text-align:center;
+}
+.footer-logo{
+  font-family:var(--font-display);font-size:1.5rem;font-weight:800;
+  color:var(--text);letter-spacing:-0.02em;margin-bottom:8px;
+}
+.footer-logo span{color:var(--accent)}
+footer p{font-size:0.82rem;color:var(--text3)}
+
+/* SEARCH OVERLAY */
+.search-results-count{
+  font-size:0.78rem;font-family:var(--font-mono);color:var(--text3);
+  padding:12px 2rem 0;text-align:center;
+}
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity 0.5s,transform 0.5s}
+.reveal.visible{opacity:1;transform:none}
+
+/* CATEGORY COLOR ACCENTS */
+.cat-pdf .section-icon{background:rgba(56,189,248,0.1);color:var(--accent)}
+.cat-image .section-icon{background:rgba(129,140,248,0.1);color:var(--accent2)}
+.cat-text .section-icon{background:rgba(52,211,153,0.1);color:var(--accent3)}
+.cat-dev .section-icon{background:rgba(251,146,60,0.1);color:var(--accent4)}
+.cat-calc .section-icon{background:rgba(244,114,182,0.1);color:var(--accent5)}
+.cat-sec .section-icon{background:rgba(250,204,21,0.1);color:#facc15}
+.cat-media .section-icon{background:rgba(167,139,250,0.1);color:#a78bfa}
+
+.cat-pdf .tool-icon{background:rgba(56,189,248,0.1)}
+.cat-image .tool-icon{background:rgba(129,140,248,0.1)}
+.cat-text .tool-icon{background:rgba(52,211,153,0.1)}
+.cat-dev .tool-icon{background:rgba(251,146,60,0.1)}
+.cat-calc .tool-icon{background:rgba(244,114,182,0.1)}
+.cat-sec .tool-icon{background:rgba(250,204,21,0.1)}
+.cat-media .tool-icon{background:rgba(167,139,250,0.1)}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:24px;right:24px;z-index:999;
+  background:var(--surface2);border:1px solid var(--border2);
+  color:var(--text);font-size:0.85rem;font-family:var(--font-body);
+  padding:12px 20px;border-radius:12px;
+  transform:translateY(20px);opacity:0;transition:all 0.3s;
+  pointer-events:none;
+}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--border2)}
+
+/* Range input */
+input[type=range]{width:100%;accent-color:var(--accent)}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Tool<span>Forge</span> <span class="logo-badge">BETA</span></a>
+  <div class="nav-search">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    <input type="text" id="globalSearch" placeholder="Search 65 tools..." autocomplete="off">
+  </div>
+  <div class="nav-actions">
+    <span id="searchCount" class="search-results-count" style="display:none"></span>
+    <button class="btn-ghost">GitHub</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">⚡ All tools, zero signup required</div>
+  <h1>Your <span class="highlight">ultimate</span> browser<br>toolbox</h1>
+  <p>65 free tools for PDF, images, text, code, calculators, security & media — all running in your browser or via our fast API.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num"><span>65</span></div><div class="lbl">Tools</div></div>
+    <div class="hero-stat"><div class="num"><span>30+</span></div><div class="lbl">Browser-side</div></div>
+    <div class="hero-stat"><div class="num"><span>0</span></div><div class="lbl">Signups needed</div></div>
+    <div class="hero-stat"><div class="num"><span>∞</span></div><div class="lbl">Free forever</div></div>
+  </div>
+</section>
+
+<!-- CATEGORY NAV -->
+<div class="cat-nav">
+  <div class="cat-nav-inner">
+    <button class="cat-btn active" data-cat="all" onclick="filterCat(this,'all')">
+      <span class="cat-dot" style="background:#38bdf8"></span> All Tools
+    </button>
+    <button class="cat-btn" data-cat="pdf" onclick="filterCat(this,'pdf')">
+      <span class="cat-dot" style="background:#38bdf8"></span> PDF Tools
+    </button>
+    <button class="cat-btn" data-cat="image" onclick="filterCat(this,'image')">
+      <span class="cat-dot" style="background:#818cf8"></span> Image Tools
+    </button>
+    <button class="cat-btn" data-cat="text" onclick="filterCat(this,'text')">
+      <span class="cat-dot" style="background:#34d399"></span> Text Tools
+    </button>
+    <button class="cat-btn" data-cat="dev" onclick="filterCat(this,'dev')">
+      <span class="cat-dot" style="background:#fb923c"></span> Dev Tools
+    </button>
+    <button class="cat-btn" data-cat="calc" onclick="filterCat(this,'calc')">
+      <span class="cat-dot" style="background:#f472b6"></span> Calculators
+    </button>
+    <button class="cat-btn" data-cat="sec" onclick="filterCat(this,'sec')">
+      <span class="cat-dot" style="background:#facc15"></span> Security
+    </button>
+    <button class="cat-btn" data-cat="media" onclick="filterCat(this,'media')">
+      <span class="cat-dot" style="background:#a78bfa"></span> Media
+    </button>
+    <button class="cat-btn" data-cat="productivity" onclick="filterCat(this,'productivity')">
+      <span class="cat-dot" style="background:#6ee7b7"></span> Productivity
+    </button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="main" id="mainContent">
+
+<!-- PDF TOOLS -->
+<section class="section cat-pdf reveal" id="sec-pdf" data-cat="pdf">
+  <div class="section-header">
+    <div class="section-icon">📄</div>
+    <div>
+      <div class="section-title">PDF Tools</div>
+      <div class="section-count">14 tools · FastAPI backend</div>
+    </div>
+    <div class="section-line"></div>
+  </div>
+  <div class="tool-grid" id="grid-pdf"></div>
+</section>
+
+<!-- IMAGE TOOLS -->
+<section class="section cat-image reveal" id="sec-image" data-cat="image">
+  <div class="section-header">
+    <div class="section-icon">🖼️</div>
+    <div>
+      <div class="section-title">Image Tools</div>
+      <div class="section-count">8 tools · mixed JS + AI</div>
+    </div>
+    <div class="section-line"></div>
+  </div>
+  <div class="tool-grid" id="grid-image"></div>
+</section>
+
+<!-- TEXT TOOLS -->
+<section class="section cat-text reveal" id="sec-text" data-cat="text">
+  <div class="section-header">
+    <div class="section-icon">✍️</div>
+    <div>
+      <div class="section-title">Text Tools</div>
+      <div class="section-count">7 tools · pure browser JS</div>
+    </div>
+    <div class="section-line"></div>
+  </div>
+  <div class="tool-grid" id="grid-text"></div>
+</section>
+
+<!-- DEV TOOLS -->
+<section class="section cat-dev reveal" id="sec-dev" data-cat="dev">
+  <div class="section-header">
+    <div class="section-icon">🛠️</div>
+    <div>
+      <div class="section-title">Developer Tools</div>
+      <div class="section-count">7 tools · pure browser JS</div>
+    </div>
+    <div class="section-line"></div>
+  </div>
+  <div class="tool-grid" id="grid-dev"></div>
+</section>
+
+<!-- CALCULATORS -->
+<section class="section cat-calc reveal" id="sec-calc" data-cat="calc">
+  <div class="section-header">
+    <div class="section-icon">🧮</div>
+    <div>
+      <div class="section-title">Calculators</div>
+      <div class="section-count">11 tools · pure browser JS</div>
+    </div>
+    <div class="section-line"></div>
+  </div>
+  <div class="tool-grid" id="grid-calc"></div>
+</section>
+
+<!-- SECURITY TOOLS -->
+<section class="section cat-sec reveal" id="sec-sec" data-cat="sec">
+  <div class="section-header">
+    <div class="section-icon">🔐</div>
+    <div>
+      <div class="section-title">Security Tools</div>
+      <div class="section-count">6 tools · pure browser JS</div>
+    </div>
+    <div class="section-line"></div>
+  </div>
+  <div class="tool-grid" id="grid-sec"></div>
+</section>
+
+<!-- MEDIA TOOLS -->
+<section class="section cat-media reveal" id="sec-media" data-cat="media">
+  <div class="section-header">
+    <div class="section-icon">🎬</div>
+    <div>
+      <div class="section-title">Media Tools</div>
+      <div class="section-count">8 tools · FFmpeg backend</div>
+    </div>
+    <div class="section-line"></div>
+  </div>
+  <div class="tool-grid" id="grid-media"></div>
+</section>
+
+<!-- PRODUCTIVITY -->
+<section class="section reveal" id="sec-productivity" data-cat="productivity">
+  <div class="section-header">
+    <div class="section-icon">⚡</div>
+    <div>
+      <div class="section-title">Productivity Tools</div>
+      <div class="section-count">4 tools · pure browser JS</div>
+    </div>
+    <div class="section-line"></div>
+  </div>
+  <div class="tool-grid" id="grid-productivity"></div>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-logo">Tool<span>Forge</span></div>
+  <p>65 free tools · no signup · no watermarks · built with ❤️</p>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-icon" id="modalIcon"></div>
+      <div>
+        <div class="modal-title" id="modalTitle"></div>
+        <div class="modal-subtitle" id="modalSub"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const TOOLS = {
+  pdf:[
+    {id:'pdf-to-word',name:'PDF to Word',icon:'📝',desc:'Convert PDF files to editable .docx',badge:'api'},
+    {id:'word-to-pdf',name:'Word to PDF',icon:'📄',desc:'Convert Word documents to PDF',badge:'api'},
+    {id:'pdf-to-excel',name:'PDF to Excel',icon:'📊',desc:'Extract tables from PDF to .xlsx',badge:'api'},
+    {id:'pdf-to-ppt',name:'PDF to PowerPoint',icon:'📽️',desc:'Convert PDF slides to .pptx',badge:'api'},
+    {id:'merge-pdf',name:'Merge PDFs',icon:'🔗',desc:'Combine multiple PDFs into one',badge:'api'},
+    {id:'split-pdf',name:'Split PDF',icon:'✂️',desc:'Split PDF into individual pages',badge:'api'},
+    {id:'compress-pdf',name:'Compress PDF',icon:'🗜️',desc:'Reduce PDF file size significantly',badge:'api'},
+    {id:'add-password',name:'Add Password',icon:'🔒',desc:'Protect your PDF with a password',badge:'api'},
+    {id:'remove-password',name:'Remove Password',icon:'🔓',desc:'Unlock password-protected PDFs',badge:'api'},
+    {id:'rotate-pdf',name:'Rotate & Reorder',icon:'🔄',desc:'Rotate pages and reorder PDF',badge:'api'},
+    {id:'pdf-to-image',name:'PDF to Image',icon:'🖼️',desc:'Export PDF pages as PNG/JPG',badge:'api'},
+    {id:'image-to-pdf',name:'Image to PDF',icon:'📋',desc:'Convert images to PDF document',badge:'api'},
+    {id:'add-watermark',name:'Add Watermark',icon:'💧',desc:'Add text/image watermark to PDF',badge:'api'},
+    {id:'fill-sign',name:'Fill & Sign PDF',icon:'✍️',desc:'Fill forms and add signature',badge:'api'},
+  ],
+  image:[
+    {id:'compress-image',name:'Compress Image',icon:'🗜️',desc:'Shrink image size without quality loss',badge:'api'},
+    {id:'resize-crop',name:'Resize & Crop',icon:'✂️',desc:'Resize images to exact dimensions',badge:'api'},
+    {id:'convert-format',name:'Convert Format',icon:'🔄',desc:'Convert between JPG/PNG/WEBP/SVG',badge:'api'},
+    {id:'remove-bg',name:'Remove Background',icon:'🪄',desc:'AI-powered background removal',badge:'ai'},
+    {id:'upscale-image',name:'Upscale Image (AI)',icon:'🔍',desc:'Enhance resolution with AI upscaling',badge:'ai'},
+    {id:'add-watermark-img',name:'Add Watermark',icon:'💧',desc:'Add text watermark to images',badge:'api'},
+    {id:'collage',name:'Collage Maker',icon:'🎨',desc:'Create image collages and grids',badge:'api'},
+    {id:'color-picker',name:'Color Picker',icon:'🎨',desc:'Pick colors from any image',badge:'api'},
+  ],
+  text:[
+    {id:'word-counter',name:'Word & Char Counter',icon:'🔢',desc:'Count words, chars, sentences',badge:'js'},
+    {id:'case-converter',name:'Case Converter',icon:'Aa',desc:'Convert text between cases',badge:'js'},
+    {id:'remove-duplicates',name:'Remove Duplicate Lines',icon:'🧹',desc:'Clean up repeated lines in text',badge:'js'},
+    {id:'find-replace',name:'Find & Replace',icon:'🔍',desc:'Find and replace text patterns',badge:'js'},
+    {id:'lorem-ipsum',name:'Lorem Ipsum Generator',icon:'📝',desc:'Generate placeholder text',badge:'js'},
+    {id:'whitespace',name:'Whitespace Cleaner',icon:'🧽',desc:'Remove extra spaces and blank lines',badge:'js'},
+    {id:'grammar-check',name:'Grammar Checker',icon:'✅',desc:'Check readability and grammar hints',badge:'js'},
+  ],
+  dev:[
+    {id:'json-format',name:'JSON Formatter',icon:'{ }',desc:'Format, validate and minify JSON',badge:'js'},
+    {id:'html-encode',name:'HTML Encode/Decode',icon:'</>',desc:'Encode/decode HTML entities',badge:'js'},
+    {id:'color-convert',name:'Color Code Converter',icon:'🎨',desc:'Convert HEX ↔ RGB ↔ HSL',badge:'js'},
+    {id:'markdown',name:'Markdown Previewer',icon:'#',desc:'Live preview Markdown as HTML',badge:'js'},
+    {id:'css-minify',name:'CSS Minifier',icon:'💅',desc:'Minify and format CSS code',badge:'js'},
+    {id:'xml-format',name:'XML Formatter',icon:'📋',desc:'Format and validate XML',badge:'js'},
+    {id:'yaml-json',name:'YAML ↔ JSON',icon:'⇄',desc:'Convert between YAML and JSON',badge:'js'},
+  ],
+  calc:[
+    {id:'bmi',name:'BMI Calculator',icon:'⚖️',desc:'Calculate Body Mass Index',badge:'js'},
+    {id:'age-calc',name:'Age Calculator',icon:'🎂',desc:'Calculate exact age from birthdate',badge:'js'},
+    {id:'percentage',name:'Percentage Calculator',icon:'%',desc:'Calculate percentages easily',badge:'js'},
+    {id:'unit-convert',name:'Unit Converter',icon:'📏',desc:'Length, weight, temperature',badge:'js'},
+    {id:'currency',name:'Currency Converter',icon:'💱',desc:'Convert between world currencies',badge:'js'},
+    {id:'emi-calc',name:'Loan & EMI Calculator',icon:'🏦',desc:'Calculate loan EMI and interest',badge:'js'},
+    {id:'tip-calc',name:'Tip Calculator',icon:'💰',desc:'Split bills and calculate tips',badge:'js'},
+    {id:'date-diff',name:'Date Difference',icon:'📅',desc:'Find difference between two dates',badge:'js'},
+    {id:'gpa-calc',name:'GPA Calculator',icon:'🎓',desc:'Calculate GPA from grades',badge:'js'},
+    {id:'sci-calc',name:'Scientific Calculator',icon:'🔬',desc:'Advanced scientific calculations',badge:'js'},
+    {id:'timezone',name:'Time Zone Converter',icon:'🌍',desc:'Convert times across time zones',badge:'js'},
+  ],
+  sec:[
+    {id:'pass-gen',name:'Password Generator',icon:'🔑',desc:'Generate strong secure passwords',badge:'js'},
+    {id:'pass-strength',name:'Password Strength',icon:'🛡️',desc:'Check how strong your password is',badge:'js'},
+    {id:'hash-gen',name:'Hash Generator',icon:'#️⃣',desc:'Generate MD5, SHA-256 hashes',badge:'js'},
+    {id:'qr-gen',name:'QR Code Generator',icon:'📱',desc:'Create QR codes for any URL/text',badge:'js'},
+    {id:'barcode-gen',name:'Barcode Generator',icon:'|||',desc:'Generate standard barcodes',badge:'js'},
+    {id:'aes-enc',name:'AES Encryption',icon:'🔐',desc:'Encrypt/decrypt text with AES',badge:'js'},
+  ],
+  media:[
+    {id:'video-compress',name:'Video Compressor',icon:'🎥',desc:'Reduce video file size',badge:'api'},
+    {id:'video-convert',name:'Video Converter',icon:'🔄',desc:'Convert video formats',badge:'api'},
+    {id:'extract-audio',name:'Extract Audio',icon:'🎵',desc:'Pull audio from any video file',badge:'api'},
+    {id:'audio-convert',name:'Audio Converter',icon:'🎶',desc:'Convert MP3/WAV/OGG formats',badge:'api'},
+    {id:'gif-maker',name:'GIF from Video',icon:'🎞️',desc:'Create animated GIFs from video',badge:'api'},
+    {id:'trim-video',name:'Trim Video & Audio',icon:'✂️',desc:'Cut and trim media files',badge:'api'},
+    {id:'volume-boost',name:'Audio Volume Booster',icon:'🔊',desc:'Boost audio volume levels',badge:'api'},
+    {id:'og-preview',name:'OG Meta Preview',icon:'🔗',desc:'Preview Open Graph meta tags',badge:'js'},
+  ],
+  productivity:[
+    {id:'twitter-preview',name:'Twitter/LinkedIn Preview',icon:'🐦',desc:'Preview social media posts',badge:'js'},
+    {id:'url-shortener',name:'URL Shortener',icon:'🔗',desc:'Shorten long URLs instantly',badge:'api'},
+    {id:'pomodoro',name:'Pomodoro Timer',icon:'⏱️',desc:'Focus timer with breaks',badge:'js'},
+    {id:'flashcard',name:'Flashcard Maker',icon:'🃏',desc:'Create and study flashcards',badge:'js'},
+  ]
+};
+
+// Render all tool cards
+function renderCards(){
+  Object.entries(TOOLS).forEach(([cat,tools])=>{
+    const grid=document.getElementById(`grid-${cat}`);
+    if(!grid)return;
+    tools.forEach((t,i)=>{
+      const isAPI=t.badge==='api'||t.badge==='ai';
+      const card=document.createElement('div');
+      card.className=`tool-card cat-${cat}${isAPI?' backend-only':''}`;
+      card.dataset.id=t.id;
+      card.dataset.name=t.name.toLowerCase();
+      card.dataset.cat=cat;
+      card.style.animationDelay=`${i*0.04}s`;
+      card.innerHTML=`
+        <span class="tool-badge badge-${t.badge}">${t.badge==='ai'?'AI':t.badge.toUpperCase()}</span>
+        <div class="tool-icon">${t.icon}</div>
+        <div class="tool-name">${t.name}</div>
+        <div class="tool-desc">${t.desc}</div>
+      `;
+      card.addEventListener('mousemove',e=>{
+        const r=card.getBoundingClientRect();
+        card.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');
+        card.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%');
+      });
+     card.addEventListener('click',()=>{
+        window.location.href = `tools/${t.id}.html`;
+});
+      grid.appendChild(card);
+    });
+  });
+}
+
+// Filter by category
+function filterCat(btn,cat){
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.section').forEach(s=>{
+    if(cat==='all'||s.dataset.cat===cat){
+      s.style.display='';
+    } else {
+      s.style.display='none';
+    }
+  });
+}
+
+// Search
+document.getElementById('globalSearch').addEventListener('input',function(){
+  const q=this.value.toLowerCase().trim();
+  const cnt=document.getElementById('searchCount');
+  if(!q){
+    document.querySelectorAll('.tool-card').forEach(c=>c.style.display='');
+    document.querySelectorAll('.section').forEach(s=>s.style.display='');
+    cnt.style.display='none';
+    return;
+  }
+  let found=0;
+  document.querySelectorAll('.section').forEach(s=>s.style.display='none');
+  document.querySelectorAll('.tool-card').forEach(c=>{
+    const match=c.dataset.name.includes(q)||c.querySelector('.tool-desc').textContent.toLowerCase().includes(q);
+    c.style.display=match?'':'none';
+    if(match){
+      found++;
+      document.getElementById(`sec-${c.dataset.cat}`).style.display='';
+    }
+  });
+  cnt.style.display='block';
+  cnt.textContent=`${found} result${found!==1?'s':''} for "${this.value}"`;
+});
+
+// Modal
+function openAPIModal(t){
+  document.getElementById('modalIcon').textContent=t.icon;
+  document.getElementById('modalTitle').textContent=t.name;
+  document.getElementById('modalSub').textContent='Backend processing required';
+  document.getElementById('modalBody').innerHTML=`
+    <div class="coming-soon">
+      <div class="cs-icon">🚀</div>
+      <h3>FastAPI Backend Required</h3>
+      <p>This tool uses our Python/FastAPI backend for heavy file processing. It will be live once the Render deployment is set up in Phase 4.</p>
+      <div class="api-tag">PHASE 4 — COMING SOON</div>
+    </div>
+  `;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function openModal(icon,title,sub,html){
+  document.getElementById('modalIcon').textContent=icon;
+  document.getElementById('modalTitle').textContent=title;
+  document.getElementById('modalSub').textContent=sub;
+  document.getElementById('modalBody').innerHTML=html;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal(e){
+  if(!e||e.target===document.getElementById('modalOverlay')){
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+}
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+function copyText(text){
+  navigator.clipboard.writeText(text).then(()=>showToast('Copied to clipboard!'));
+}
+
+// ===== TOOL IMPLEMENTATIONS =====
+
+function openTool(id){
+  switch(id){
+    case 'word-counter': toolWordCounter(); break;
+    case 'case-converter': toolCaseConverter(); break;
+    case 'remove-duplicates': toolRemoveDuplicates(); break;
+    case 'find-replace': toolFindReplace(); break;
+    case 'lorem-ipsum': toolLorem(); break;
+    case 'whitespace': toolWhitespace(); break;
+    case 'grammar-check': toolGrammar(); break;
+    case 'json-format': toolJSON(); break;
+    case 'html-encode': toolHTMLEncode(); break;
+    case 'color-convert': toolColorConvert(); break;
+    case 'markdown': toolMarkdown(); break;
+    case 'css-minify': toolCSSMinify(); break;
+    case 'xml-format': toolXMLFormat(); break;
+    case 'yaml-json': toolYAMLJSON(); break;
+    case 'bmi': toolBMI(); break;
+    case 'age-calc': toolAge(); break;
+    case 'percentage': toolPercentage(); break;
+    case 'unit-convert': toolUnitConvert(); break;
+    case 'currency': toolCurrency(); break;
+    case 'emi-calc': toolEMI(); break;
+    case 'tip-calc': toolTip(); break;
+    case 'date-diff': toolDateDiff(); break;
+    case 'gpa-calc': toolGPA(); break;
+    case 'sci-calc': toolSciCalc(); break;
+    case 'timezone': toolTimezone(); break;
+    case 'pass-gen': toolPassGen(); break;
+    case 'pass-strength': toolPassStrength(); break;
+    case 'hash-gen': toolHash(); break;
+    case 'qr-gen': toolQR(); break;
+    case 'barcode-gen': toolBarcode(); break;
+    case 'aes-enc': toolAES(); break;
+    case 'twitter-preview': toolTwitterPreview(); break;
+    case 'pomodoro': toolPomodoro(); break;
+    case 'flashcard': toolFlashcard(); break;
+    case 'og-preview': toolOGPreview(); break;
+    default: openAPIModal({icon:'🔧',name:id,badge:'api'});
+  }
+}
+
+// --- TEXT TOOLS ---
+function toolWordCounter(){
+  openModal('🔢','Word & Character Counter','Count words, characters, sentences, paragraphs',`
+    <div class="field-row">
+      <label class="field-label">PASTE OR TYPE YOUR TEXT</label>
+      <textarea class="tool-input" id="wcText" placeholder="Start typing or paste text here..." oninput="updateWC()"></textarea>
+    </div>
+    <div class="grid-2" id="wcStats" style="margin-top:16px">
+      <div class="output-box" style="text-align:center">
+        <div style="font-size:0.7rem;color:var(--text3);margin-bottom:4px;font-family:var(--font-mono)">WORDS</div>
+        <div style="font-size:2rem;font-weight:800;color:var(--accent);font-family:var(--font-display)" id="wcW">0</div>
+      </div>
+      <div class="output-box" style="text-align:center">
+        <div style="font-size:0.7rem;color:var(--text3);margin-bottom:4px;font-family:var(--font-mono)">CHARACTERS</div>
+        <div style="font-size:2rem;font-weight:800;color:var(--accent2);font-family:var(--font-display)" id="wcC">0</div>
+      </div>
+      <div class="output-box" style="text-align:center">
+        <div style="font-size:0.7rem;color:var(--text3);margin-bottom:4px;font-family:var(--font-mono)">SENTENCES</div>
+        <div style="font-size:2rem;font-weight:800;color:var(--accent3);font-family:var(--font-display)" id="wcS">0</div>
+      </div>
+      <div class="output-box" style="text-align:center">
+        <div style="font-size:0.7rem;color:var(--text3);margin-bottom:4px;font-family:var(--font-mono)">PARAGRAPHS</div>
+        <div style="font-size:2rem;font-weight:800;color:var(--accent4);font-family:var(--font-display)" id="wcP">0</div>
+      </div>
+    </div>
+    <div class="output-box" style="margin-top:12px">
+      <span style="color:var(--text3);font-size:0.75rem">READING TIME: </span><span id="wcR" style="color:var(--accent)">0 sec</span>
+    </div>
+  `);
+}
+window.updateWC=function(){
+  const t=document.getElementById('wcText').value;
+  const words=t.trim()?t.trim().split(/\s+/).length:0;
+  const chars=t.length;
+  const sentences=t.split(/[.!?]+/).filter(s=>s.trim()).length;
+  const paras=t.split(/\n\s*\n/).filter(p=>p.trim()).length||0;
+  const mins=Math.round(words/200);
+  document.getElementById('wcW').textContent=words;
+  document.getElementById('wcC').textContent=chars;
+  document.getElementById('wcS').textContent=sentences;
+  document.getElementById('wcP').textContent=paras;
+  document.getElementById('wcR').textContent=mins<1?Math.round(words/200*60)+' sec':mins+' min';
+};
+
+function toolCaseConverter(){
+  openModal('Aa','Case Converter','Transform text between different cases',`
+    <div class="field-row">
+      <label class="field-label">INPUT TEXT</label>
+      <textarea class="tool-input" id="ccText" placeholder="Enter text to convert..."></textarea>
+    </div>
+    <div class="tool-btn-row">
+      <button class="tool-btn" onclick="cc('upper')">UPPERCASE</button>
+      <button class="tool-btn" onclick="cc('lower')">lowercase</button>
+      <button class="tool-btn" onclick="cc('title')">Title Case</button>
+      <button class="tool-btn" onclick="cc('sentence')">Sentence case</button>
+      <button class="tool-btn" onclick="cc('camel')">camelCase</button>
+      <button class="tool-btn" onclick="cc('snake')">snake_case</button>
+      <button class="tool-btn" onclick="cc('kebab')">kebab-case</button>
+      <button class="tool-btn" onclick="cc('alt')">aLtErNaTe</button>
+    </div>
+    <div class="field-row">
+      <label class="field-label">OUTPUT</label>
+      <div class="output-box" id="ccOut" style="min-height:80px">Result appears here...</div>
+    </div>
+  `);
+}
+window.cc=function(type){
+  const t=document.getElementById('ccText').value;
+  let r='';
+  switch(type){
+    case 'upper':r=t.toUpperCase();break;
+    case 'lower':r=t.toLowerCase();break;
+    case 'title':r=t.replace(/\b\w/g,c=>c.toUpperCase());break;
+    case 'sentence':r=t.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g,c=>c.toUpperCase());break;
+    case 'camel':r=t.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g,(_,c)=>c.toUpperCase());break;
+    case 'snake':r=t.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');break;
+    case 'kebab':r=t.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');break;
+    case 'alt':r=[...t].map((c,i)=>i%2?c.toUpperCase():c.toLowerCase()).join('');break;
+  }
+  const out=document.getElementById('ccOut');
+  out.innerHTML=`${r}<button class="copy-btn" onclick="copyText(\`${r.replace(/`/g,'\\`')}\`)">Copy</button>`;
+};
+
+function toolRemoveDuplicates(){
+  openModal('🧹','Remove Duplicate Lines','Remove repeated lines from your text',`
+    <div class="field-row">
+      <label class="field-label">INPUT (one item per line)</label>
+      <textarea class="tool-input" id="rdInput" placeholder="Line 1&#10;Line 2&#10;Line 1&#10;Line 3"></textarea>
+    </div>
+    <div class="tool-btn-row">
+      <button class="tool-btn" onclick="removeDupes(false)">Remove Duplicates</button>
+      <button class="tool-btn" onclick="removeDupes(true)">Remove + Sort</button>
+    </div>
+    <div class="field-row">
+      <label class="field-label">OUTPUT</label>
+      <div class="output-box" id="rdOut">Result appears here...</div>
+    </div>
+  `);
+}
+window.removeDupes=function(sort){
+  const lines=document.getElementById('rdInput').value.split('\n');
+  let unique=[...new Set(lines.map(l=>l.trim()).filter(l=>l))];
+  if(sort)unique.sort();
+  const res=unique.join('\n');
+  document.getElementById('rdOut').innerHTML=`<pre style="white-space:pre-wrap;font-size:0.82rem">${res}</pre><button class="copy-btn" onclick="copyText(${JSON.stringify(res)})">Copy</button>`;
+};
+
+function toolFindReplace(){
+  openModal('🔍','Find & Replace','Find and replace text patterns',`
+    <div class="field-row">
+      <label class="field-label">INPUT TEXT</label>
+      <textarea class="tool-input" id="frText" placeholder="Enter your text here..."></textarea>
+    </div>
+    <div class="grid-2">
+      <div class="field-row">
+        <label class="field-label">FIND</label>
+        <input class="tool-input" id="frFind" placeholder="Text to find...">
+      </div>
+      <div class="field-row">
+        <label class="field-label">REPLACE WITH</label>
+        <input class="tool-input" id="frReplace" placeholder="Replace with...">
+      </div>
+    </div>
+    <div class="tool-btn-row">
+      <button class="tool-btn" onclick="doFR(false)">Replace All</button>
+      <button class="tool-btn" onclick="doFR(true)">Case-insensitive</button>
+    </div>
+    <div class="output-box" id="frOut">Result appears here...</div>
+  `);
+}
+window.doFR=function(ci){
+  const txt=document.getElementById('frText').value;
+  const find=document.getElementById('frFind').value;
+  const rep=document.getElementById('frReplace').value;
+  if(!find){showToast('Enter search text');return;}
+  const flags=ci?'gi':'g';
+  const res=txt.replace(new RegExp(find.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),flags),rep);
+  document.getElementById('frOut').innerHTML=`<pre style="white-space:pre-wrap">${res}</pre><button class="copy-btn" onclick="copyText(${JSON.stringify(res)})">Copy</button>`;
+};
+
+function toolLorem(){
+  openModal('📝','Lorem Ipsum Generator','Generate placeholder text',`
+    <div class="grid-2">
+      <div class="field-row">
+        <label class="field-label">PARAGRAPHS</label>
+        <input class="tool-input" id="liCount" type="number" value="3" min="1" max="20">
+      </div>
+      <div class="field-row">
+        <label class="field-label">TYPE</label>
+        <select class="tool-select" id="liType">
+          <option value="para">Paragraphs</option>
+          <option value="words">Words only</option>
+          <option value="sent">Sentences</option>
+        </select>
+      </div>
+    </div>
+    <div class="tool-btn-row">
+      <button class="tool-btn" onclick="genLorem()">Generate</button>
+    </div>
+    <div class="output-box" id="liOut">Click Generate to create placeholder text.</div>
+  `);
+}
+window.genLorem=function(){
+  const words=['lorem','ipsum','dolor','sit','amet','consectetur','adipiscing','elit','sed','do','eiusmod','tempor','incididunt','ut','labore','et','dolore','magna','aliqua','enim','ad','minim','veniam','quis','nostrud','exercitation','ullamco','laboris','nisi','aliquip','ex','ea','commodo','consequat','duis','aute','irure','in','reprehenderit','voluptate','velit','esse','cillum','fugiat','nulla','pariatur'];
+  const n=parseInt(document.getElementById('liCount').value)||3;
+  const type=document.getElementById('liType').value;
+  const rw=(c)=>Array.from({length:c},()=>words[Math.floor(Math.random()*words.length)]).join(' ');
+  let res='';
+  if(type==='words'){res=rw(n*20);}
+  else if(type==='sent'){res=Array.from({length:n},()=>rw(10)+'.').join(' ');}
+  else{res=Array.from({length:n},()=>Array.from({length:4+Math.floor(Math.random()*4)},()=>rw(8+Math.floor(Math.random()*8))+'.').join(' ')).join('\n\n');}
+  document.getElementById('liOut').innerHTML=`<div style="white-space:pre-wrap;line-height:1.7">${res}</div><button class="copy-btn" onclick="copyText(${JSON.stringify(res)})">Copy</button>`;
+};
+
+function toolWhitespace(){
+  openModal('🧽','Whitespace Cleaner','Remove extra spaces and blank lines',`
+    <div class="field-row">
+      <label class="field-label">INPUT TEXT</label>
+      <textarea class="tool-input" id="wsIn" placeholder="Paste messy text here..."></textarea>
+    </div>
+    <div class="tool-btn-row">
+      <button class="tool-btn" onclick="cleanWS('all')">Clean All</button>
+      <button class="tool-btn" onclick="cleanWS('lines')">Remove Blank Lines</button>
+      <button class="tool-btn" onclick="cleanWS('spaces')">Trim Extra Spaces</button>
+      <button class="tool-btn" onclick="cleanWS('tabs')">Replace Tabs</button>
+    </div>
+    <div class="output-box" id="wsOut">Result appears here...</div>
+  `);
+}
+window.cleanWS=function(type){
+  let t=document.getElementById('wsIn').value;
+  switch(type){
+    case 'all':t=t.replace(/[ \t]+/g,' ').replace(/\n\s*\n/g,'\n').trim();break;
+    case 'lines':t=t.split('\n').filter(l=>l.trim()).join('\n');break;
+    case 'spaces':t=t.replace(/[ \t]+/g,' ').trim();break;
+    case 'tabs':t=t.replace(/\t/g,'  ');break;
+  }
+  document.getElementById('wsOut').innerHTML=`<pre style="white-space:pre-wrap">${t}</pre><button class="copy-btn" onclick="copyText(${JSON.stringify(t)})">Copy</button>`;
+};
+
+function toolGrammar(){
+  openModal('✅','Grammar & Readability','Analyse text readability and common issues',`
+    <div class="field-row">
+      <label class="field-label">YOUR TEXT</label>
+      <textarea class="tool-input" id="grText" placeholder="Paste your text for analysis..." style="min-height:120px"></textarea>
+    </div>
+    <div class="tool-btn-row">
+      <button class="tool-btn" onclick="checkGrammar()">Analyse Text</button>
+    </div>
+    <div id="grOut"></div>
+  `);
+}
+window.checkGrammar=function(){
+  const t=document.getElementById('grText').value;
+  if(!t.trim()){showToast('Enter some text first');return;}
+  const words=t.trim().split(/\s+/).length;
+  const chars=t.length;
+  const sentences=t.split(/[.!?]+/).filter(s=>s.trim()).length||1;
+  const avgWordLen=(chars/words).toFixed(1);
+  const avgSentLen=(words/sentences).toFixed(1);
+  const syllables=t.toLowerCase().replace(/[^a-z]/g,' ').split(/\s+/).reduce((a,w)=>{
+    return a+Math.max(1,w.replace(/[^aeiou]/g,'').length);
+  },0);
+  const fk=Math.max(0,Math.min(100,206.835-1.015*(words/sentences)-84.6*(syllables/words))).toFixed(0);
+  const grade=(0.39*(words/sentences)+11.8*(syllables/words)-15.59).toFixed(1);
+  const fkLabel=fk>70?'Easy':fk>50?'Medium':'Hard';
+  document.getElementById('grOut').innerHTML=`
+    <div class="grid-2" style="margin-top:12px">
+      <div class="output-box" style="text-align:center"><div style="font-size:0.7rem;color:var(--text3);font-family:var(--font-mono)">FLESCH SCORE</div><div style="font-size:1.8rem;font-weight:800;color:var(--accent);font-family:var(--font-display)">${fk}<span style="font-size:0.8rem;color:var(--text3)"> / 100</span></div><div style="font-size:0.75rem;color:var(--text3)">${fkLabel}</div></div>
+      <div class="output-box" style="text-align:center"><div style="font-size:0.7rem;color:var(--text3);font-family:var(--font-mono)">GRADE LEVEL</div><div style="font-size:1.8rem;font-weight:800;color:var(--accent2);font-family:var(--font-display)">${grade}</div></div>
+      <div class="output-box" style="text-align:center"><div style="font-size:0.7rem;color:var(--text3);font-family:var(--font-mono)">AVG SENT LEN</div><div style="font-size:1.8rem;font-weight:800;color:var(--accent3);font-family:var(--font-display)">${avgSentLen}<span style="font-size:0.8rem"> words</span></div></div>
+      <div class="output-box" style="text-align:center"><div style="font-size:0.7rem;color:var(--text3);font-family:var(--font-mono)">AVG WORD LEN</div><div style="font-size:1.8rem;font-weight:800;color:var(--accent4);font-family:var(--font-display)">${avgWordLen}<span style="font-size:0.8rem"> chars</span></div></div>
+    </div>
+  `;
+};
+
+// --- DEV TOOLS ---
+function toolJSON(){
+  openModal('{ }','JSON Formatter & Validator','Format, validate and minify JSON',`
+    <div class="field-row">
+      <label class="field-label">JSON INPUT</label>
+      <textarea class="tool-input" id="jsonIn" placeholder='{"name":"ToolForge","version":1}' style="min-height:120px;font-size:0.78rem"></textarea>
+    </div>
+    <div class="tool-btn-row">
+      <button class="tool-btn" onclick="fmtJSON('pretty')">Format (Pretty)</button>
+      <button class="tool-btn" onclick="fmtJSON('mini')">Minify</button>
+      <button class="tool-btn" onclick="fmtJSON('validate')">Validate</button>
+    </div>
+    <div class="output-box" id="jsonOut" style="min-height:100px;font-size:0.78rem">Result appears here...</div>
+  `);
+}
+window.fmtJSON=function(mode){
+  const raw=document.getElementById('jsonIn').value;
+  try{
+    const parsed=JSON.parse(raw);
+    let res=mode==='mini'?JSON.stringify(parsed):JSON.stringify(parsed,null,2);
+    if(mode==='validate'){
+      document.getElementById('jsonOut').innerHTML=`<span style="color:var(--accent3)">✓ Valid JSON</span> · ${Object.keys(parsed).length} top-level keys`;
+      return;
+    }
+    document.getElementById('jsonOut').innerHTML=`<pre style="white-space:pre-wrap;font-size:0.78rem">${res.replace(/</g,'&lt;')}</pre><button class="copy-btn" onclick="copyText(${JSON.stringify(res)})">Copy</button>`;
+  }catch(e){
+    document.getElementById('jsonOut').innerHTML=`<span style="color:#ef4444">✗ Invalid JSON: ${e.message}</span>`;
+  }
+};
+
+function toolHTMLEncode(){
+  openModal('</>','HTML Encode / Decode','Encode and decode HTML entities',`
+    <div class="field-row">
+      <label class="field-label">INPUT</label>
+      <textarea class="tool-input" id="heIn" placeholder="<h1>Hello & World</h1>"></textarea>
+    </div>
+    <div class="tool-btn-row">
+      <button class="tool-btn" onclick="heConvert('encode')">Encode HTML</button>
+      <button class="tool-btn" onclick="heConvert('decode')">Decode HTML</button>
+    </div>
+    <div class="output-box" id="heOut">Result appears here...</div>
+  `);
+}
+window.heConvert=function(mode){
+  const t=document.getElementById('heIn').value;
+  let res;
+  if(mode==='encode'){
+    res=t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }else{
+    const d=document.createElement('div');
+    d.innerHTML=t;
+    res=d.textContent;
+  }
+  document.getElementById('heOut').innerHTML=`<pre style="white-space:pre-wrap">${res.replace(/</g,'&lt;')}</pre><button class="copy-btn" onclick="copyText(${JSON.stringify(res)})">Copy</button>`;
+};
+
+function toolColorConvert(){
+  openModal('🎨','Color Code Converter','Convert HEX ↔ RGB ↔ HSL',`
+    <div class="field-row">
+      <label class="field-label">ENTER COLOR (HEX, RGB, or HSL)</label>
+      <div style="display:flex;gap:10px;align-items:center">
+        <input class="tool-input" id="colorIn" placeholder="#38bdf8 or rgb(56,189,248)" oninput="convertColor()" style="flex:1">
+        <input type="color" id="colorPicker" value="#38bdf8" oninput="document.getElementById('colorIn').value=this.value;convertColor()" style="width:50px;height:42px;border:1px solid var(--border);border-radius:8px;background:none;cursor:pointer;padding:2px">
+      </div>
+    </div>
+    <div id="colorOut"></div>
+  `);
+  document.getElementById('colorIn').value='#38bdf8';
+  window.convertColor();
+}
+window.convertColor=function(){
+  const val=document.getElementById('colorIn').value.trim();
+  let r,g,b;
+  try{
+    if(val.startsWith('#')){
+      const hex=val.slice(1);
+      r=parseInt(hex.slice(0,2),16);g=parseInt(hex.slice(2,4),16);b=parseInt(hex.slice(4,6),16);
+    }else if(val.startsWith('rgb')){
+      [r,g,b]=val.match(/\d+/g).map(Number);
+    }else if(val.startsWith('hsl')){
+      let [h,s,l]=val.match(/[\d.]+/g).map(Number);s/=100;l/=100;
+      const c=(1-Math.abs(2*l-1))*s,x=c*(1-Math.abs((h/60)%2-1)),m=l-c/2;
+      let r1=0,g1=0,b1=0;
+      if(h<60){r1=c;g1=x}else if(h<120){r1=x;g1=c}else if(h<180){g1=c;b1=x}else if(h<240){g1=x;b1=c}else if(h<300){r1=x;b1=c}else{r1=c;b1=x}
+      r=Math.round((r1+m)*255);g=Math.round((g1+m)*255);b=Math.round((b1+m)*255);
+    }else return;
+    const hex='#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
+    const rgb=`rgb(${r}, ${g}, ${b})`;
+    let h2,s2,l2;
+    const r2=r/255,g2=g/255,b2=b/255;
+    const max=Math.max(r2,g2,b2),min=Math.min(r2,g2,b2);
+    l2=(max+min)/2;
+    if(max===min){h2=s2=0}else{
+      const d=max-min;s2=l2>0.5?d/(2-max-min):d/(max+min);
+      switch(max){case r2:h2=((g2-b2)/d+(g2<b2?6:0))/6;break;case g2:h2=((b2-r2)/d+2)/6;break;case b2:h2=((r2-g2)/d+4)/6;break;}
+    }
+    const hsl=`hsl(${Math.round(h2*360)}, ${Math.round(s2*100)}%, ${Math.round(l2*100)}%)`;
+    document.getElementById('colorOut').innerHTML=`
+      <div style="width:100%;height:80px;border-radius:12px;background:${hex};margin:16px 0;border:1px solid var(--border)"></div>
+      <div class="grid-2">
+        <div class="output-box"><span style="color:var(--text3);font-size:0.7rem">HEX</span><br><span style="font-size:1.1rem;color:var(--accent)">${hex}</span><button class="copy-btn" onclick="copyText('${hex}')">Copy</button></div>
+        <div class="output-box"><span style="color:var(--text3);font-size:0.7rem">RGB</span><br><span style="font-size:0.9rem;color:var(--accent2)">${rgb}</span><button class="copy-btn" onclick="copyText('${rgb}')">Copy</button></div>
+        <div class="output-box" style="grid-column:span 2"><span style="color:var(--text3);font-size:0.7rem">HSL</span><br><span style="font-size:0.9rem;color:var(--accent3)">${hsl}</span><button class="copy-btn" onclick="copyText('${hsl}')">Copy</button></div>
+      </div>
+    `;
+  }catch(e){document.getElementById('colorOut').innerHTML='<span style="color:#ef4444">Invalid color format</span>';}
+};
+
+function toolMarkdown(){
+  openModal('#','Markdown Previewer','Live preview Markdown as HTML',`
+    <div class="grid-2" style="gap:12px">
+      <div>
+        <label class="field-label">MARKDOWN</label>
+        <textarea class="tool-input" id="mdIn" style="min-height:200px;font-size:0.78rem" oninput="renderMD()" placeholder="# Hello World&#10;&#10;**Bold**, *italic*, \`code\`&#10;&#10;- Item 1&#10;- Item 2"></textarea>
+      </div>
+      <div>
+        <label class="field-label">PREVIEW</label>
+        <div id="mdOut" style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px;min-height:200px;font-size:0.85rem;line-height:1.7;overflow-y:auto"></div>
+      </div>
+    </div>
+  `);
+}
+window.renderMD=function(){
+  const md=document.getElementById('mdIn').value;
+  let h=md
+    .replace(/^### (.+)/gm,'<h3 style="color:var(--text);font-family:var(--font-display);margin:12px 0 6px">$1</h3>')
+    .replace(/^## (.+)/gm,'<h2 style="color:var(--text);font-family:var(--font-display);margin:16px 0 8px">$1</h2>')
+    .replace(/^# (.+)/gm,'<h1 style="color:var(--text);font-family:var(--font-display);margin:20px 0 10px">$1</h1>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/`(.+?)`/g,'<code style="background:var(--surface2);padding:2px 6px;border-radius:4px;font-family:var(--font-mono);font-size:0.8em">$1</code>')
+    .replace(/^- (.+)/gm,'<li style="margin:4px 0">$1</li>')
+    .replace(/(<li.*<\/li>\n?)+/g,'<ul style="padding-left:20px;margin:8px 0">$&</ul>')
+    .replace(/^---$/gm,'<hr style="border:none;border-top:1px solid var(--border);margin:16px 0">')
+    .replace(/\n/g,'<br>');
+  document.getElementById('mdOut').innerHTML=h;
+};
+
+function toolCSSMinify(){
+  openModal('💅','CSS Minifier & Formatter','Minify and format CSS code',`
+    <div class="field-row">
+      <label class="field-label">CSS INPUT</label>
+      <textarea class="tool-input" id="cssIn" placeholder="body { background: red; color: blue; }" style="min-height:120px;font-size:0.78rem"></textarea>
+    </div>
+    <div class="tool-btn-row">
+      <button class="tool-btn" onclick="doCSS('mini')">Minify CSS</button>
+      <button class="tool-btn" onclick="doCSS('fmt')">Format CSS</button>
+    </div>
+    <div class="output-box" id="cssOut" style="font-size:0.78rem;min-height:80px">Result appears here...</div>
+  `);
+}
+window.doCSS=function(mode){
+  const css=document.getElementById('cssIn').value;
+  let res;
+  if(mode==='mini'){
+    res=css.replace(/\/\*[\s\S]*?\*\//g,'').replace(/\s+/g,' ').replace(/\s*([{};:,>+~])\s*/g,'$1').replace(/;}/g,'}').trim();
+  }else{
+    res=css.replace(/\s+/g,' ').replace(/\s*\{\s*/g,' {\n  ').replace(/;\s*/g,';\n  ').replace(/\s*\}\s*/g,'\n}\n').trim();
+  }
+  document.getElementById('cssOut').innerHTML=`<pre style="white-space:pre-wrap;font-size:0.78rem">${res.replace(/</g,'&lt;')}</pre><button class="copy-btn" onclick="copyText(${JSON.stringify(res)})">Copy</button>`;
+};
+
+function toolXMLFormat(){
+  openModal('📋','XML Formatter','Format and indent XML code',`
+    <div class="field-row">
+      <label class="field-label">XML INPUT</label>
+      <textarea class="tool-input" id="xmlIn" placeholder="<root><item>hello</item></root>" style="min-height:100px;font-size:0.78rem"></textarea>
+    </div>
+    <div class="tool-btn-row">
+      <button class="tool-btn" onclick="fmtXML()">Format XML</button>
+    </div>
+    <div class="output-box" id="xmlOut" style="font-size:0.78rem">Result appears here...</div>
+  `);
+}
+window.fmtXML=function(){
+  const x=document.getElementById('xmlIn').value;
+  try{
+    const pad=(depth)=>'  '.repeat(depth);
+    let formatted='',depth=0;
+    const tokens=x.split(/(<[^>]+>)/g);
+    tokens.forEach(t=>{
+      if(!t.trim())return;
+      if(t.match(/^<\//)){ depth--;formatted+=pad(depth)+t+'\n'; }
+      else if(t.match(/\/>$/)){ formatted+=pad(depth)+t+'\n'; }
+      else if(t.match(/^<[^?!]/)){ formatted+=pad(depth)+t+'\n';depth++; }
+      else{ formatted+=pad(depth)+t+'\n'; }
+    });
+    document.getElementById('xmlOut').innerHTML=`<pre style="white-space:pre-wrap;font-size:0.78rem">${formatted.replace(/</g,'&lt;')}</pre><button class="copy-btn" onclick="copyText(${JSON.stringify(formatted)})">Copy</button>`;
+  }catch(e){document.getElementById('xmlOut').innerHTML='<span style="color:#ef4444">Format error</span>';}
+};
+
+function toolYAMLJSON(){
+  openModal('⇄','YAML ↔ JSON Converter','Convert between YAML and JSON',`
+    <div class="field-row">
+      <label class="field-label">INPUT (JSON or YAML)</label>
+      <textarea class="tool-input" id="yjIn" placeholder='{"key":"value"}' style="min-height:120px;font-size:0.78rem"></textarea>
+    </div>
+    <div class="tool-btn-row">
+      <button class="tool-btn" onclick="doYJ('toYAML')">JSON → YAML</button>
+      <button class="tool-btn" onclick="doYJ('toJSON')">YAML → JSON</button>
+    </div>
+    <div class="output-box" id="yjOut" style="font-size:0.78rem">Result appears here...</div>
+  `);
+}
+window.doYJ=function(mode){
+  const inp=document.getElementById('yjIn').value;
+  try{
+    if(mode==='toYAML'){
+      const obj=JSON.parse(inp);
+      const toYAML=(o,d=0)=>{
+        const p='  '.repeat(d);
+        if(Array.isArray(o))return o.map(i=>`${p}- ${typeof i==='object'?'\n'+toYAML(i,d+1):i}`).join('\n');
+        if(typeof o==='object'&&o)return Object.entries(o).map(([k,v])=>`${p}${k}: ${typeof v==='object'?'\n'+toYAML(v,d+1):v}`).join('\n');
+        return String(o);
+      };
+      const res=toYAML(obj);
+      document.getElementById('yjOut').innerHTML=`<pre style="white-space:pre-wrap;font-size:0.78rem">${res}</pre><button class="copy-btn" onclick="copyText(${JSON.stringify(res)})">Copy</button>`;
+    }else{
+      // Simple YAML to JSON
+      const lines=inp.split('\n');
+      const obj={};
+      lines.forEach(l=>{
+        const m=l.match(/^(\s*)(\w+):\s*(.*)$/);
+        if(m&&m[3])obj[m[2]]=isNaN(m[3])?m[3].replace(/^["']|["']$/g,''):Number(m[3]);
+      });
+      const res=JSON.stringify(obj,null,2);
+      document.getElementById('yjOut').innerHTML=`<pre style="white-space:pre-wrap;font-size:0.78rem">${res}</pre><button class="copy-btn" onclick="copyText(${JSON.stringify(res)})">Copy</button>`;
+    }
+  }catch(e){document.getElementById('yjOut').innerHTML=`<span style="color:#ef4444">Error: ${e.message}</span>`;}
+};
+
+// --- CALCULATORS ---
+function toolBMI(){
+  openModal('⚖️','BMI Calculator','Calculate your Body Mass Index',`
+    <div class="grid-2">
+      <div class="field-row">
+        <label class="field-label">WEIGHT (kg)</label>
+        <input class="tool-input" id="bmiW" type="number" placeholder="70" oninput="calcBMI()">
+      </div>
+      <div class="field-row">
+        <label class="field-label">HEIGHT (cm)</label>
+        <input class="tool-input" id="bmiH" type="number" placeholder="175" oninput="calcBMI()">
+      </div>
+    </div>
+    <div id="bmiOut"></div>
+  `);
+}
+window.calcBMI=function(){
+  const w=parseFloat(document.getElementById('bmiW').value);
+  const h=parseFloat(document.getElementById('bmiH').value)/100;
+  if(!w||!h)return;
+  const bmi=(w/(h*h)).toFixed(1);
+  const cat=bmi<18.5?['Underweight','var(--accent2)']:bmi<25?['Normal weight','var(--accent3)']:bmi<30?['Overweight','var(--accent4)']:['Obese','#ef4444'];
+  document.getElementById('bmiOut').innerHTML=`
+    <div class="output-box" style="text-align:center;padding:20px">
+      <div style="font-size:3.5rem;font-weight:800;color:${cat[1]};font-family:var(--font-display)">${bmi}</div>
+      <div style="font-size:1rem;color:${cat[1]};margin-top:4px;font-weight:600">${cat[0]}</div>
+      <div style="margin-top:12px;font-size:0.75rem;color:var(--text3)">Healthy range: 18.5 – 24.9</div>
+    </div>
+  `;
+};
+
+function toolAge(){
+  openModal('🎂','Age Calculator','Calculate your exact age from birthdate',`
+    <div class="field-row">
+      <label class="field-label">DATE OF BIRTH</label>
+      <input class="tool-input" id="dob" type="date" oninput="calcAge()">
+    </div>
+    <div id="ageOut"></div>
+  `);
+}
+window.calcAge=function(){
+  const d=new Date(document.getElementById('dob').value);
+  if(!d.valueOf())return;
+  const now=new Date();
+  let y=now.getFullYear()-d.getFullYear();
+  let m=now.getMonth()-d.getMonth();
+  let day=now.getDate()-d.getDate();
+  if(day<0){m--;day+=new Date(now.getFullYear(),now.getMonth(),0).getDate();}
+  if(m<0){y--;m+=12;}
+  const totalDays=Math.floor((now-d)/86400000);
+  document.getElementById('ageOut').innerHTML=`
+    <div class="grid-2" style="margin-top:12px">
+      <div class="output-box" style="text-align:center"><div style="font-size:0.7rem;color:var(--text3);font-family:var(--font-mono)">YEARS</div><div style="font-size:2.5rem;font-weight:800;color:var(--accent);font-family:var(--font-display)">${y}</div></div>
+      <div class="output-box" style="text-align:center"><div style="font-size:0.7rem;color:var(--text3);font-family:var(--font-mono)">MONTHS</div><div style="font-size:2.5rem;font-weight:800;color:var(--accent2);font-family:var(--font-display)">${m}</div></div>
+      <div class="output-box" style="text-align:center;grid-column:span 2"><div style="font-size:0.7rem;color:var(--text3);font-family:var(--font-mono)">TOTAL DAYS ALIVE</div><div style="font-size:2rem;font-weight:800;color:var(--accent3);font-family:var(--font-display)">${totalDays.toLocaleString()}</div></div>
+    </div>
+  `;
+};
+
+function toolPercentage(){
+  openModal('%','Percentage Calculator','Calculate percentages easily',`
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px">
+        <label class="field-label">WHAT IS X% OF Y?</label>
+        <div class="grid-2"><input class="tool-input" id="p1x" type="number" placeholder="X (%)"><input class="tool-input" id="p1y" type="number" placeholder="Y"></div>
+        <div class="tool-btn-row" style="margin:8px 0 0"><button class="tool-btn" onclick="calcPct(1)">Calculate</button></div>
+        <div id="pr1" class="output-box" style="margin-top:8px;display:none"></div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px">
+        <label class="field-label">X IS WHAT % OF Y?</label>
+        <div class="grid-2"><input class="tool-input" id="p2x" type="number" placeholder="X"><input class="tool-input" id="p2y" type="number" placeholder="Y"></div>
+        <div class="tool-btn-row" style="margin:8px 0 0"><button class="tool-btn" onclick="calcPct(2)">Calculate</button></div>
+        <div id="pr2" class="output-box" style="margin-top:8px;display:none"></div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px">
+        <label class="field-label">% CHANGE FROM X TO Y</label>
+        <div class="grid-2"><input class="tool-input" id="p3x" type="number" placeholder="From"><input class="tool-input" id="p3y" type="number" placeholder="To"></div>
+        <div class="tool-btn-row" style="margin:8px 0 0"><button class="tool-btn" onclick="calcPct(3)">Calculate</button></div>
+        <div id="pr3" class="output-box" style="margin-top:8px;display:none"></div>
+      </div>
+    </div>
+  `);
+}
+window.calcPct=function(n){
+  const el=document.getElementById;
+  const show=(id,html)=>{const d=el(id);d.innerHTML=html;d.style.display='block'};
+  if(n===1){const x=parseFloat(el('p1x').value),y=parseFloat(el('p1y').value);if(!isNaN(x)&&!isNaN(y))show('pr1',`<span style="color:var(--accent);font-size:1.5rem;font-weight:800;font-family:var(--font-display)">${(x/100*y).toFixed(2)}</span>`);}
+  else if(n===2){const x=parseFloat(el('p2x').value),y=parseFloat(el('p2y').value);if(!isNaN(x)&&!isNaN(y))show('pr2',`<span style="color:var(--accent2);font-size:1.5rem;font-weight:800;font-family:var(--font-display)">${(x/y*100).toFixed(2)}%</span>`);}
+  else{const x=parseFloat(el('p3x').value),y=parseFloat(el('p3y').value);if(!isNaN(x)&&!isNaN(y)){const ch=((y-x)/x*100).toFixed(2);show('pr3',`<span style="color:${ch>=0?'var(--accent3)':'#ef4444'};font-size:1.5rem;font-weight:800;font-family:var(--font-display)">${ch>=0?'+':''}${ch}%</span>`);}}
+};
+
+function toolUnitConvert(){
+  openModal('📏','Unit Converter','Convert length, weight and temperature',`
+    <div class="field-row">
+      <label class="field-label">CATEGORY</label>
+      <select class="tool-select" id="ucCat" onchange="updateUnitOptions()">
+        <option value="length">Length</option>
+        <option value="weight">Weight</option>
+        <option value="temp">Temperature</option>
+      </select>
+    </div>
+    <div class="grid-2">
+      <div>
+        <label class="field-label">FROM</label>
+        <select class="tool-select" id="ucFrom"></select>
+      </div>
+      <div>
+        <label class="field-label">TO</label>
+        <select class="tool-select" id="ucTo"></select>
+      </div>
+    </div>
+    <div class="field-row">
+      <label class="field-label">VALUE</label>
+      <input class="tool-input" id="ucVal" type="number" placeholder="Enter value" oninput="doUnitConvert()">
+    </div>
+    <div class="output-box" id="ucOut">Result appears here...</div>
+  `);
+  window.updateUnitOptions();
+}
+const unitData={
+  length:{m:1,km:0.001,cm:100,mm:1000,inch:39.3701,ft:3.28084,yard:1.09361,mile:0.000621371},
+  weight:{kg:1,g:1000,mg:1e6,lb:2.20462,oz:35.274,ton:0.001},
+  temp:['°C','°F','K']
+};
+window.updateUnitOptions=function(){
+  const cat=document.getElementById('ucCat').value;
+  const from=document.getElementById('ucFrom');
+  const to=document.getElementById('ucTo');
+  const units=cat==='temp'?unitData.temp:Object.keys(unitData[cat]);
+  [from,to].forEach(s=>{s.innerHTML='';units.forEach(u=>{const o=document.createElement('option');o.value=u;o.textContent=u;s.appendChild(o);});});
+  to.selectedIndex=1;
+};
+window.doUnitConvert=function(){
+  const cat=document.getElementById('ucCat').value;
+  const from=document.getElementById('ucFrom').value;
+  const to=document.getElementById('ucTo').value;
+  const val=parseFloat(document.getElementById('ucVal').value);
+  if(isNaN(val))return;
+  let res;
+  if(cat==='temp'){
+    if(from==='°C'&&to==='°F')res=val*9/5+32;
+    else if(from==='°F'&&to==='°C')res=(val-32)*5/9;
+    else if(from==='°C'&&to==='K')res=val+273.15;
+    else if(from==='K'&&to==='°C')res=val-273.15;
+    else if(from==='°F'&&to==='K')res=(val-32)*5/9+273.15;
+    else if(from==='K'&&to==='°F')res=(val-273.15)*9/5+32;
+    else res=val;
+  }else{
+    const base=val/unitData[cat][from];
+    res=base*unitData[cat][to];
+  }
+  document.getElementById('ucOut').innerHTML=`<span style="font-size:1.8rem;font-weight:800;color:var(--accent);font-family:var(--font-display)">${parseFloat(res.toFixed(6))} ${to}</span>`;
+};
+
+function toolCurrency(){
+  openModal('💱','Currency Converter','Convert between major currencies (demo rates)',`
+    <div class="grid-2">
+      <div>
+        <label class="field-label">FROM</label>
+        <select class="tool-select" id="curFrom"></select>
+      </div>
+      <div>
+        <label class="field-label">TO</label>
+        <select class="tool-select" id="curTo"></select>
+      </div>
+    </div>
+    <div class="field-row">
+      <label class="field-label">AMOUNT</label>
+      <input class="tool-input" id="curAmt" type="number" value="1" oninput="doCurrency()">
+    </div>
+    <div class="output-box" id="curOut">Result appears here...</div>
+    <div style="font-size:0.72rem;color:var(--text3);margin-top:8px;font-family:var(--font-mono)">⚠ Demo rates — connect ExchangeRate API in Phase 4 for live data</div>
+  `);
+  const rates={USD:1,EUR:0.92,GBP:0.79,INR:83.4,JPY:149.5,CAD:1.36,AUD:1.53,CHF:0.89,SGD:1.34,CNY:7.24};
+  ['curFrom','curTo'].forEach((id,i)=>{
+    const s=document.getElementById(id);
+    Object.keys(rates).forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;s.appendChild(o);});
+    s.value=i===0?'USD':'EUR';
+  });
+  window._rates=rates;
+  window.doCurrency=function(){
+    const f=document.getElementById('curFrom').value,t=document.getElementById('curTo').value;
+    const a=parseFloat(document.getElementById('curAmt').value)||1;
+    const res=(a/window._rates[f]*window._rates[t]).toFixed(4);
+    document.getElementById('curOut').innerHTML=`<span style="font-size:2rem;font-weight:800;color:var(--accent);font-family:var(--font-display)">${res} ${t}</span>`;
+  };
+  window.doCurrency();
+}
+
+function toolEMI(){
+  openModal('🏦','Loan & EMI Calculator','Calculate monthly EMI and total interest',`
+    <div class="field-row"><label class="field-label">LOAN AMOUNT (₹)</label><input class="tool-input" id="emiP" type="number" placeholder="500000" oninput="calcEMI()"></div>
+    <div class="field-row"><label class="field-label">ANNUAL INTEREST RATE (%)</label><input class="tool-input" id="emiR" type="number" placeholder="8.5" step="0.1" oninput="calcEMI()"></div>
+    <div class="field-row"><label class="field-label">LOAN TENURE (months)</label><input class="tool-input" id="emiT" type="number" placeholder="60" oninput="calcEMI()"></div>
+    <div id="emiOut" style="margin-top:8px"></div>
+  `);
+}
+window.calcEMI=function(){
+  const p=parseFloat(document.getElementById('emiP').value);
+  const r=parseFloat(document.getElementById('emiR').value)/12/100;
+  const n=parseFloat(document.getElementById('emiT').value);
+  if(!p||!r||!n)return;
+  const emi=(p*r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1);
+  const total=emi*n;
+  const interest=total-p;
+  const fmt=v=>v.toLocaleString('en-IN',{maximumFractionDigits:0});
+  document.getElementById('emiOut').innerHTML=`
+    <div class="output-box" style="text-align:center;padding:16px;margin-bottom:10px"><div style="font-size:0.7rem;color:var(--text3);font-family:var(--font-mono)">MONTHLY EMI</div><div style="font-size:2.5rem;font-weight:800;color:var(--accent);font-family:var(--font-display)">₹${fmt(emi)}</div></div>
+    <div class="grid-2">
+      <div class="output-box" style="text-align:center"><div style="font-size:0.7rem;color:var(--text3);font-family:var(--font-mono)">TOTAL PAYMENT</div><div style="font-size:1.2rem;font-weight:700;color:var(--text);font-family:var(--font-display)">₹${fmt(total)}</div></div>
+      <div class="output-box" style="text-align:center"><div style="font-size:0.7rem;color:var(--text3);font-family:var(--font-mono)">TOTAL INTEREST</div><div style="font-size:1.2rem;font-weight:700;color:var(--accent4);font-family:var(--font-display)">₹${fmt(interest)}</div></div>
+    </div>
+  `;
+};
+
+function toolTip(){
+  openModal('💰','Tip Calculator','Calculate tip and split bills',`
+    <div class="field-row"><label class="field-label">BILL AMOUNT (₹)</label><input class="tool-input" id="tipBill" type="number" placeholder="1200" oninput="calcTip()"></div>
+    <div class="field-row"><label class="field-label">TIP PERCENTAGE: <span id="tipPctLbl">15%</span></label><input type="range" id="tipPct" min="0" max="50" value="15" step="1" oninput="document.getElementById('tipPctLbl').textContent=this.value+'%';calcTip()"></div>
+    <div class="field-row"><label class="field-label">SPLIT BETWEEN</label><input class="tool-input" id="tipPpl" type="number" value="2" min="1" oninput="calcTip()"></div>
+    <div id="tipOut" style="margin-top:8px"></div>
+  `);
+}
+window.calcTip=function(){
+  const bill=parseFloat(document.getElementById('tipBill').value)||0;
+  const pct=parseFloat(document.getElementById('tipPct').value);
+  const ppl=parseInt(document.getElementById('tipPpl').value)||1;
+  const tip=bill*pct/100;
+  const total=bill+tip;
+  const pp=total/ppl;
+  document.getElementById('tipOut').innerHTML=`
+    <div class="grid-2">
+      <div class="output-box" style="text-align:center"><div style="font-size:0.7rem;color:var(--text3);font-family:var(--font-mono)">TIP AMOUNT</div><div style="font-size:1.8rem;font-weight:800;color:var(--accent3);font-family:var(--font-display)">₹${tip.toFixed(2)}</div></div>
+      <div class="output-box" style="text-align:center"><div style="font-size:0.7rem;color:var(--text3);font-family:var(--font-mono)">TOTAL</div><div style="font-size:1.8rem;font-weight:800;color:var(--accent);font-family:var(--font-display)">₹${total.toFixed(2)}</div></div>
+      <div class="output-box" style="text-align:center;grid-column:span 2"><div style="font-size:0.7rem;color:var(--text3);font-family:var(--font-mono)">PER PERSON (${ppl} people)</div><div style="font-size:2rem;font-weight:800;color:var(--accent2);font-family:var(--font-display)">₹${pp.toFixed(2)}</div></div>
+    </div>
+  `;
+};
+
+function toolDateDiff(){
+  openModal('📅','Date Difference','Find the difference between two dates',`
+    <div class="grid-2">
+      <div class="field-row"><label class="field-label">START DATE</label><input class="tool-input" id="dd1" type="date" oninput="calcDateDiff()"></div>
+      <div class="field-row"><label class="field-label">END DATE</label><input class="tool-input" id="dd2" type="date" oninput="calcDateDiff()"></div>
+    </div>
+    <div id="ddOut" style="margin-top:8px"></div>
+  `);
+  const now=new Date().toISOString().split('T')[0];
+  document.getElementById('dd2').value=now;
+}
+window.calcDateDiff=function(){
+  const d1=new Date(document.getElementById('dd1').value);
+  const d2=new Date(document.getElementById('dd2').value);
+  if(!d1.valueOf()||!d2.valueOf())return;
+  const diff=Math.abs(d2-d1);
+  const days=Math.floor(diff/86400000);
+  const weeks=Math.floor(days/7);
+  const months=Math.abs((d2.getFullYear()-d1.getFullYear())*12+(d2.getMonth()-d1.getMonth()));
+  const years=Math.abs(d2.getFullYear()-d1.getFullYear());
+  document.getElementById('ddOut').innerHTML=`
+    <div class="grid-2">
+      <div class="output-box" style="text-align:center"><div style="font-size:0.7rem;color:var(--text3);font-family:var(--font-mono)">DAYS</div><div style="font-size:2rem;font-weight:800;color:var(--accent);font-family:var(--font-display)">${days.toLocaleString()}</div></div>
+      <div class="output-box" style="text-align:center"><div style="font-size:0.7rem;color:var(--text3);font-family:var(--font-mono)">WEEKS</div><div style="font-size:2rem;font-weight:800;color:var(--accent2);font-family:var(--font-display)">${weeks.toLocaleString()}</div></div>
+      <div class="output-box" style="text-align:center"><div style="font-size:0.7rem;color:var(--text3);font-family:var(--font-mono)">MONTHS</div><div style="font-size:2rem;font-weight:800;color:var(--accent3);font-family:var(--font-display)">${months}</div></div>
+      <div class="output-box" style="text-align:center"><div style="font-size:0.7rem;color:var(--text3);font-family:var(--font-mono)">YEARS</div><div style="font-size:2rem;font-weight:800;color:var(--accent4);font-family:var(--font-display)">${years}</div></div>
+    </div>
+  `;
+};
+
+function toolGPA(){
+  openModal('🎓','GPA Calculator','Calculate GPA from your grades',`
+    <div id="gpaRows"></div>
+    <div class="tool-btn-row">
+      <button class="tool-btn" onclick="addGPARow()">+ Add Course</button>
+      <button class="tool-btn" onclick="calcGPA()">Calculate GPA</button>
+    </div>
+    <div id="gpaOut" style="margin-top:8px"></div>
+  `);
+  window._gpaRows=[];
+  for(let i=0;i<3;i++)window.addGPARow();
+}
+window.addGPARow=function(){
+  const id=Date.now()+Math.random();
+  const div=document.createElement('div');
+  div.className='grid-2';div.style.gap='10px';div.style.marginBottom='8px';
+  div.innerHTML=`<input class="tool-input gpa-grade" placeholder="Grade (A/B/C or %)"><input class="tool-input gpa-credit" type="number" placeholder="Credits" min="1" max="6" value="3">`;
+  document.getElementById('gpaRows').appendChild(div);
+};
+window.calcGPA=function(){
+  const gradeMap={A:4,A_:3.7,'B+':3.3,B:3,'B-':2.7,'C+':2.3,C:2,'C-':1.7,'D+':1.3,D:1,F:0};
+  const grades=[...document.querySelectorAll('.gpa-grade')].map(e=>e.value.trim().toUpperCase().replace('-','_'));
+  const credits=[...document.querySelectorAll('.gpa-credit')].map(e=>parseFloat(e.value)||0);
+  let totalPts=0,totalCr=0;
+  grades.forEach((g,i)=>{
+    let pts=gradeMap[g]??parseFloat(g);
+    if(!isNaN(pts)&&credits[i]){totalPts+=pts*credits[i];totalCr+=credits[i];}
+  });
+  if(!totalCr)return showToast('Enter valid grades');
+  const gpa=(totalPts/totalCr).toFixed(2);
+  document.getElementById('gpaOut').innerHTML=`<div class="output-box" style="text-align:center;padding:20px"><div style="font-size:0.7rem;color:var(--text3);font-family:var(--font-mono)">CUMULATIVE GPA</div><div style="font-size:3rem;font-weight:800;color:var(--accent);font-family:var(--font-display)">${gpa}<span style="font-size:1rem;color:var(--text3)"> / 4.0</span></div></div>`;
+};
+
+function toolSciCalc(){
+  openModal('🔬','Scientific Calculator','Advanced scientific calculations',`
+    <div class="output-box" id="calcDisplay" style="font-size:1.5rem;text-align:right;padding:16px;min-height:60px;font-family:var(--font-mono);color:var(--accent)">0</div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px">
+      ${['sin','cos','tan','log','√','π','e','(',')','C','7','8','9','÷','%','4','5','6','×','^','1','2','3','-','!','0','.','=','+','←']
+        .map(k=>`<button class="tool-btn" style="justify-content:center;padding:10px;font-family:var(--font-mono);font-size:0.9rem" onclick="sciCalc('${k}')">${k}</button>`).join('')}
+    </div>
+  `);
+  window._calcExpr='';
+}
+window.sciCalc=function(k){
+  const d=document.getElementById('calcDisplay');
+  const map={'÷':'/','×':'*','√':'Math.sqrt(','π':'Math.PI','e':'Math.E','sin':'Math.sin(','cos':'Math.cos(','tan':'Math.tan(','log':'Math.log10('};
+  if(k==='C'){window._calcExpr='';d.textContent='0';return;}
+  if(k==='←'){window._calcExpr=window._calcExpr.slice(0,-1);d.textContent=window._calcExpr||'0';return;}
+  if(k==='='){
+    try{
+      let expr=window._calcExpr;
+      Object.entries(map).forEach(([k,v])=>{expr=expr.replaceAll(k,v);});
+      expr=expr.replace(/(\d+)!/g,(_,n)=>{let f=1;for(let i=2;i<=n;i++)f*=i;return f;});
+      const res=eval(expr);
+      d.textContent=parseFloat(res.toFixed(10));
+      window._calcExpr=String(parseFloat(res.toFixed(10)));
+    }catch{d.textContent='Error';window._calcExpr='';}
+    return;
+  }
+  window._calcExpr+=(map[k]||k);
+  d.textContent=window._calcExpr;
+};
+
+function toolTimezone(){
+  openModal('🌍','Time Zone Converter','Convert times across time zones',`
+    <div class="field-row"><label class="field-label">DATE & TIME</label><input class="tool-input" id="tzTime" type="datetime-local" oninput="convertTZ()"></div>
+    <div class="field-row"><label class="field-label">FROM TIMEZONE</label>
+      <select class="tool-select" id="tzFrom" onchange="convertTZ()"></select>
+    </div>
+    <div id="tzOut" style="margin-top:12px"></div>
+  `);
+  const tzs=['UTC','America/New_York','America/Los_Angeles','America/Chicago','Europe/London','Europe/Paris','Asia/Kolkata','Asia/Tokyo','Asia/Shanghai','Australia/Sydney','Pacific/Auckland'];
+  const s=document.getElementById('tzFrom');
+  tzs.forEach(z=>{const o=document.createElement('option');o.value=z;o.textContent=z.replace('_',' ');s.appendChild(o);});
+  s.value='Asia/Kolkata';
+  const now=new Date();
+  document.getElementById('tzTime').value=now.toISOString().slice(0,16);
+  window._tzs=tzs;
+  window.convertTZ=function(){
+    const t=document.getElementById('tzTime').value;
+    if(!t)return;
+    const dt=new Date(t);
+    document.getElementById('tzOut').innerHTML=window._tzs.map(z=>{
+      try{const s=dt.toLocaleString('en-US',{timeZone:z,dateStyle:'medium',timeStyle:'short'});return `<div class="output-box" style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:center"><span style="color:var(--text3);font-size:0.78rem;font-family:var(--font-mono)">${z}</span><span style="color:var(--accent);font-weight:600">${s}</span></div>`;}catch{return '';}
+    }).join('');
+  };
+  window.convertTZ();
+}
+
+// --- SECURITY TOOLS ---
+function toolPassGen(){
+  openModal('🔑','Password Generator','Generate strong, secure passwords',`
+    <div class="field-row"><label class="field-label">LENGTH: <span id="pgLenLbl">16</span></label><input type="range" id="pgLen" min="6" max="64" value="16" step="1" oninput="document.getElementById('pgLenLbl').textContent=this.value;genPass()"></div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px">
+      <label style="display:flex;align-items:center;gap:6px;font-size:0.82rem;color:var(--text2);cursor:pointer"><input type="checkbox" id="pgUpper" checked onchange="genPass()"> Uppercase</label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:0.82rem;color:var(--text2);cursor:pointer"><input type="checkbox" id="pgLower" checked onchange="genPass()"> Lowercase</label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:0.82rem;color:var(--text2);cursor:pointer"><input type="checkbox" id="pgNum" checked onchange="genPass()"> Numbers</label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:0.82rem;color:var(--text2);cursor:pointer"><input type="checkbox" id="pgSym" checked onchange="genPass()"> Symbols</label>
+    </div>
+    <div class="tool-btn-row"><button class="tool-btn" onclick="genPass()">🔄 Regenerate</button></div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px" id="pgOut"></div>
+  `);
+  window.genPass=function(){
+    let chars='';
+    if(document.getElementById('pgUpper').checked)chars+='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    if(document.getElementById('pgLower').checked)chars+='abcdefghijklmnopqrstuvwxyz';
+    if(document.getElementById('pgNum').checked)chars+='0123456789';
+    if(document.getElementById('pgSym').checked)chars+='!@#$%^&*()_+-=[]{}|;:,.<>?';
+    if(!chars){showToast('Select at least one character type');return;}
+    const len=parseInt(document.getElementById('pgLen').value);
+    const passes=Array.from({length:3},()=>Array.from({length:len},()=>chars[Math.floor(Math.random()*chars.length)]).join(''));
+    document.getElementById('pgOut').innerHTML=passes.map(p=>`<div class="output-box" style="display:flex;justify-content:space-between;align-items:center"><span style="font-family:var(--font-mono);font-size:0.82rem;word-break:break-all">${p}</span><button class="copy-btn" style="position:static;flex-shrink:0" onclick="copyText('${p}')">Copy</button></div>`).join('');
+  };
+  window.genPass();
+}
+
+function toolPassStrength(){
+  openModal('🛡️','Password Strength Checker','Check how strong your password is',`
+    <div class="field-row">
+      <label class="field-label">YOUR PASSWORD</label>
+      <input class="tool-input" id="psPass" type="password" placeholder="Enter password to check..." oninput="checkStrength()">
+    </div>
+    <div id="psOut" style="margin-top:8px"></div>
+  `);
+}
+window.checkStrength=function(){
+  const p=document.getElementById('psPass').value;
+  if(!p){document.getElementById('psOut').innerHTML='';return;}
+  let score=0;
+  const checks=[
+    [/.{8,}/,'At least 8 characters'],
+    [/.{12,}/,'At least 12 characters'],
+    [/[a-z]/,'Lowercase letters'],
+    [/[A-Z]/,'Uppercase letters'],
+    [/[0-9]/,'Numbers'],
+    [/[^a-zA-Z0-9]/,'Special characters'],
+    [/.{16,}/,'16+ characters'],
+  ];
+  const results=checks.map(([re,label])=>({pass:re.test(p),label}));
+  score=results.filter(r=>r.pass).length;
+  const cats=['Very Weak','Weak','Fair','Good','Strong','Very Strong','Excellent'];
+  const colors=['#ef4444','#f97316','#facc15','var(--accent3)','var(--accent3)','var(--accent)','var(--accent2)'];
+  const pct=Math.round(score/checks.length*100);
+  document.getElementById('psOut').innerHTML=`
+    <div class="output-box" style="margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span style="font-size:1rem;font-weight:700;color:${colors[score-1]||'#ef4444'};font-family:var(--font-display)">${cats[score-1]||'Very Weak'}</span>
+        <span style="font-size:0.8rem;color:var(--text3)">${pct}%</span>
+      </div>
+      <div style="background:var(--bg);border-radius:4px;height:6px;overflow:hidden">
+        <div style="width:${pct}%;height:100%;background:${colors[score-1]||'#ef4444'};border-radius:4px;transition:width 0.3s"></div>
+      </div>
+    </div>
+    ${results.map(r=>`<div style="display:flex;align-items:center;gap:8px;font-size:0.8rem;margin-bottom:6px"><span style="color:${r.pass?'var(--accent3)':'#ef4444'}">${r.pass?'✓':'✗'}</span><span style="color:${r.pass?'var(--text2)':'var(--text3)'}">${r.label}</span></div>`).join('')}
+  `;
+};
+
+function toolHash(){
+  openModal('#️⃣','Hash Generator','Generate MD5, SHA-256 and SHA-1 hashes',`
+    <div class="field-row">
+      <label class="field-label">INPUT TEXT</label>
+      <textarea class="tool-input" id="hashIn" placeholder="Enter text to hash..."></textarea>
+    </div>
+    <div class="tool-btn-row"><button class="tool-btn" onclick="genHash()">Generate Hashes</button></div>
+    <div id="hashOut" style="margin-top:8px"></div>
+  `);
+}
+window.genHash=async function(){
+  const text=document.getElementById('hashIn').value;
+  if(!text){showToast('Enter text first');return;}
+  const encoder=new TextEncoder();
+  const data=encoder.encode(text);
+  async function sha(algo){
+    const buf=await crypto.subtle.digest(algo,data);
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+  const [s256,s1,s512]=await Promise.all([sha('SHA-256'),sha('SHA-1'),sha('SHA-512')]);
+  // Simple MD5-like (not cryptographic — FNV for demo)
+  let h=2166136261;
+  for(let i=0;i<data.length;i++){h^=data[i];h=(h*16777619)>>>0;}
+  const fnv=h.toString(16).padStart(8,'0');
+  const hashes=[['SHA-256',s256],['SHA-1',s1],['SHA-512',s512.slice(0,64)+'...'],['FNV-32 (demo)',fnv]];
+  document.getElementById('hashOut').innerHTML=hashes.map(([name,val])=>`
+    <div class="output-box" style="margin-bottom:8px">
+      <div style="font-size:0.7rem;color:var(--text3);font-family:var(--font-mono);margin-bottom:6px">${name}</div>
+      <div style="font-family:var(--font-mono);font-size:0.78rem;word-break:break-all;color:var(--accent)">${val}</div>
+      <button class="copy-btn" onclick="copyText('${val}')">Copy</button>
+    </div>
+  `).join('');
+};
+
+function toolQR(){
+  openModal('📱','QR Code Generator','Create QR codes for any URL or text',`
+    <div class="field-row">
+      <label class="field-label">URL OR TEXT</label>
+      <input class="tool-input" id="qrIn" placeholder="https://toolforge.dev or any text..." oninput="genQR()">
+    </div>
+    <div style="text-align:center;padding:20px" id="qrOut">
+      <div style="color:var(--text3);font-size:0.85rem">Enter text above to generate QR code</div>
+    </div>
+    <div style="text-align:center;font-size:0.72rem;color:var(--text3);font-family:var(--font-mono)">Uses QR Server API — requires internet</div>
+  `);
+}
+window.genQR=function(){
+  const val=document.getElementById('qrIn').value.trim();
+  if(!val){return;}
+  const url=`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(val)}&bgcolor=0d1220&color=38bdf8`;
+  document.getElementById('qrOut').innerHTML=`<img src="${url}" style="border-radius:12px;border:1px solid var(--border)" width="200" height="200" alt="QR Code"><br><a href="${url}" download="qr.png" style="color:var(--accent);font-size:0.8rem;text-decoration:none;margin-top:8px;display:inline-block">⬇ Download QR</a>`;
+};
+
+function toolBarcode(){
+  openModal('|||','Barcode Generator','Generate standard barcodes',`
+    <div class="field-row">
+      <label class="field-label">VALUE (numbers for EAN/CODE128)</label>
+      <input class="tool-input" id="bcIn" placeholder="123456789012">
+    </div>
+    <div class="tool-btn-row"><button class="tool-btn" onclick="genBarcode()">Generate</button></div>
+    <div style="text-align:center;padding:20px;background:white;border-radius:12px;margin-top:12px" id="bcOut">
+      <div style="color:#888;font-size:0.85rem">Barcode appears here</div>
+    </div>
+    <div style="text-align:center;font-size:0.72rem;color:var(--text3);font-family:var(--font-mono);margin-top:8px">Uses barcode.tec-it.com API</div>
+  `);
+}
+window.genBarcode=function(){
+  const val=document.getElementById('bcIn').value.trim();
+  if(!val)return;
+  const url=`https://barcode.tec-it.com/barcode.ashx?data=${encodeURIComponent(val)}&code=Code128&translate-esc=on`;
+  document.getElementById('bcOut').innerHTML=`<img src="${url}" style="max-width:100%;border-radius:8px" alt="Barcode">`;
+};
+
+function toolAES(){
+  openModal('🔐','AES Encryption / Decryption','Encrypt and decrypt text with AES-GCM',`
+    <div class="field-row"><label class="field-label">TEXT</label><textarea class="tool-input" id="aesText" placeholder="Text to encrypt or decrypt..."></textarea></div>
+    <div class="field-row"><label class="field-label">PASSWORD / KEY</label><input class="tool-input" id="aesKey" type="password" placeholder="Your secret key..."></div>
+    <div class="tool-btn-row">
+      <button class="tool-btn" onclick="doAES('enc')">🔒 Encrypt</button>
+      <button class="tool-btn" onclick="doAES('dec')">🔓 Decrypt</button>
+    </div>
+    <div class="output-box" id="aesOut" style="word-break:break-all;min-height:60px">Result appears here...</div>
+  `);
+}
+window.doAES=async function(mode){
+  const text=document.getElementById('aesText').value;
+  const pw=document.getElementById('aesKey').value;
+  if(!text||!pw){showToast('Enter both text and key');return;}
+  try{
+    const enc=new TextEncoder();
+    const keyMat=await crypto.subtle.importKey('raw',enc.encode(pw),{name:'PBKDF2'},false,['deriveKey']);
+    const salt=mode==='enc'?crypto.getRandomValues(new Uint8Array(16)):new Uint8Array(atob(text.split(':')[0]).split('').map(c=>c.charCodeAt(0)));
+    const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:100000,hash:'SHA-256'},keyMat,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);
+    if(mode==='enc'){
+      const iv=crypto.getRandomValues(new Uint8Array(12));
+      const buf=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,enc.encode(text));
+      const res=btoa(String.fromCharCode(...salt))+':'+btoa(String.fromCharCode(...iv))+':'+btoa(String.fromCharCode(...new Uint8Array(buf)));
+      document.getElementById('aesOut').innerHTML=`<span style="color:var(--accent);font-size:0.78rem">${res}</span><button class="copy-btn" onclick="copyText('${res}')">Copy</button>`;
+    }else{
+      const parts=text.split(':');
+      const iv=new Uint8Array(atob(parts[1]).split('').map(c=>c.charCodeAt(0)));
+      const data=new Uint8Array(atob(parts[2]).split('').map(c=>c.charCodeAt(0)));
+      const buf=await crypto.subtle.decrypt({name:'AES-GCM',iv},key,data);
+      const res=new TextDecoder().decode(buf);
+      document.getElementById('aesOut').innerHTML=`<span style="color:var(--accent3)">${res}</span><button class="copy-btn" onclick="copyText('${res}')">Copy</button>`;
+    }
+  }catch(e){document.getElementById('aesOut').innerHTML=`<span style="color:#ef4444">Error: wrong key or invalid data</span>`;}
+};
+
+// --- PRODUCTIVITY TOOLS ---
+function toolTwitterPreview(){
+  openModal('🐦','Social Post Preview','Preview Twitter / LinkedIn posts',`
+    <div class="field-row"><label class="field-label">AUTHOR NAME</label><input class="tool-input" id="spName" value="ToolForge" oninput="updateSP()"></div>
+    <div class="field-row"><label class="field-label">HANDLE</label><input class="tool-input" id="spHandle" value="@toolforge" oninput="updateSP()"></div>
+    <div class="field-row"><label class="field-label">POST CONTENT (<span id="spCount">0</span>/280)</label><textarea class="tool-input" id="spText" placeholder="Write your post..." maxlength="280" oninput="updateSP()"></textarea></div>
+    <div id="spOut" style="margin-top:12px"></div>
+  `);
+  window.updateSP=function(){
+    const name=document.getElementById('spName').value;
+    const handle=document.getElementById('spHandle').value;
+    const text=document.getElementById('spText').value;
+    document.getElementById('spCount').textContent=text.length;
+    const t=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+    document.getElementById('spOut').innerHTML=`
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:16px;max-width:480px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--bg);font-family:var(--font-display);font-size:1.1rem">${(name[0]||'T').toUpperCase()}</div>
+          <div><div style="font-weight:700;color:var(--text);font-size:0.9rem">${name||'Name'}</div><div style="font-size:0.78rem;color:var(--text3)">${handle||'@handle'}</div></div>
+        </div>
+        <div style="font-size:0.9rem;color:var(--text);line-height:1.6;margin-bottom:12px">${text||'Your post text...'}</div>
+        <div style="font-size:0.75rem;color:var(--text3)">${t} · X (Twitter)</div>
+        <div style="display:flex;gap:20px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+          <span style="font-size:0.8rem;color:var(--text3)">💬 0</span>
+          <span style="font-size:0.8rem;color:var(--text3)">🔁 0</span>
+          <span style="font-size:0.8rem;color:var(--text3)">❤️ 0</span>
+          <span style="font-size:0.8rem;color:var(--text3)">📊 0</span>
+        </div>
+      </div>
+    `;
+  };
+  window.updateSP();
+}
+
+function toolOGPreview(){
+  openModal('🔗','Open Graph Meta Preview','Preview how your URL looks on social media',`
+    <div class="field-row"><label class="field-label">URL</label><input class="tool-input" id="ogUrl" placeholder="https://yoursite.com" oninput="updateOG()"></div>
+    <div class="field-row"><label class="field-label">OG TITLE</label><input class="tool-input" id="ogTitle" placeholder="Page Title" oninput="updateOG()"></div>
+    <div class="field-row"><label class="field-label">OG DESCRIPTION</label><textarea class="tool-input" id="ogDesc" placeholder="Page description..." oninput="updateOG()"></textarea></div>
+    <div id="ogOut" style="margin-top:12px"></div>
+  `);
+  window.updateOG=function(){
+    const url=document.getElementById('ogUrl').value||'yoursite.com';
+    const title=document.getElementById('ogTitle').value||'Page Title';
+    const desc=document.getElementById('ogDesc').value||'Page description goes here...';
+    const domain=url.replace(/https?:\/\//,'').split('/')[0];
+    document.getElementById('ogOut').innerHTML=`
+      <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;max-width:480px">
+        <div style="background:var(--surface);height:120px;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:0.85rem">OG Image Placeholder (1200×630)</div>
+        <div style="background:var(--bg3);padding:12px 14px;border-top:1px solid var(--border)">
+          <div style="font-size:0.7rem;color:var(--text3);margin-bottom:4px;font-family:var(--font-mono);text-transform:uppercase">${domain}</div>
+          <div style="font-weight:700;color:var(--text);font-size:0.9rem;margin-bottom:4px">${title}</div>
+          <div style="font-size:0.78rem;color:var(--text3);line-height:1.5">${desc.slice(0,120)}${desc.length>120?'...':''}</div>
+        </div>
+      </div>
+    `;
+  };
+  window.updateOG();
+}
+
+let pomodoroInterval=null,pomSeconds=0,pomMode='work',pomCycle=0;
+function toolPomodoro(){
+  openModal('⏱️','Pomodoro Timer','Focus timer with break intervals',`
+    <div style="text-align:center;padding:20px">
+      <div style="font-size:0.75rem;font-family:var(--font-mono);color:var(--text3);margin-bottom:8px" id="pomMode">WORK SESSION · CYCLE 1</div>
+      <div style="font-size:5rem;font-weight:800;font-family:var(--font-display);color:var(--accent);line-height:1;margin:16px 0" id="pomDisplay">25:00</div>
+      <div style="background:var(--bg3);border-radius:8px;height:6px;margin:16px 0;overflow:hidden">
+        <div id="pomBar" style="height:100%;background:var(--accent);width:100%;border-radius:8px;transition:width 1s linear"></div>
+      </div>
+      <div class="tool-btn-row" style="justify-content:center;margin-top:20px">
+        <button class="tool-btn" id="pomBtn" onclick="togglePom()">▶ Start</button>
+        <button class="tool-btn" onclick="resetPom()">↺ Reset</button>
+      </div>
+      <div style="margin-top:16px;font-size:0.8rem;color:var(--text3)">Work: 25 min · Short break: 5 min · Long break: 15 min</div>
+    </div>
+  `);
+  pomSeconds=25*60;pomMode='work';pomCycle=1;
+  if(pomodoroInterval){clearInterval(pomodoroInterval);pomodoroInterval=null;}
+  window.togglePom=function(){
+    const btn=document.getElementById('pomBtn');
+    if(pomodoroInterval){clearInterval(pomodoroInterval);pomodoroInterval=null;btn.textContent='▶ Resume';return;}
+    btn.textContent='⏸ Pause';
+    const total=pomMode==='work'?25*60:pomCycle%4===0?15*60:5*60;
+    pomodoroInterval=setInterval(()=>{
+      pomSeconds--;
+      const m=Math.floor(pomSeconds/60).toString().padStart(2,'0');
+      const s=(pomSeconds%60).toString().padStart(2,'0');
+      if(document.getElementById('pomDisplay'))document.getElementById('pomDisplay').textContent=`${m}:${s}`;
+      if(document.getElementById('pomBar'))document.getElementById('pomBar').style.width=(pomSeconds/total*100)+'%';
+      if(pomSeconds<=0){
+        clearInterval(pomodoroInterval);pomodoroInterval=null;
+        if(pomMode==='work'){pomMode='break';pomCycle++;pomSeconds=pomCycle%4===0?15*60:5*60;}
+        else{pomMode='work';pomSeconds=25*60;}
+        if(document.getElementById('pomMode'))document.getElementById('pomMode').textContent=`${pomMode.toUpperCase()} SESSION · CYCLE ${pomCycle}`;
+        if(document.getElementById('pomBtn'))document.getElementById('pomBtn').textContent='▶ Start';
+        if(document.getElementById('pomDisplay'))document.getElementById('pomDisplay').textContent=pomMode==='work'?'25:00':pomCycle%4===0?'15:00':'05:00';
+        if(document.getElementById('pomBar'))document.getElementById('pomBar').style.width='100%';
+        try{new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAA...').play();}catch{}
+      }
+    },1000);
+  };
+  window.resetPom=function(){
+    if(pomodoroInterval){clearInterval(pomodoroInterval);pomodoroInterval=null;}
+    pomSeconds=25*60;pomMode='work';pomCycle=1;
+    if(document.getElementById('pomDisplay'))document.getElementById('pomDisplay').textContent='25:00';
+    if(document.getElementById('pomBar'))document.getElementById('pomBar').style.width='100%';
+    if(document.getElementById('pomBtn'))document.getElementById('pomBtn').textContent='▶ Start';
+    if(document.getElementById('pomMode'))document.getElementById('pomMode').textContent='WORK SESSION · CYCLE 1';
+  };
+}
+
+function toolFlashcard(){
+  openModal('🃏','Flashcard Maker','Create and study flashcards',`
+    <div id="fcCreate">
+      <div class="grid-2">
+        <div class="field-row"><label class="field-label">FRONT (Question)</label><input class="tool-input" id="fcFront" placeholder="What is React?"></div>
+        <div class="field-row"><label class="field-label">BACK (Answer)</label><input class="tool-input" id="fcBack" placeholder="A JS library for building UIs"></div>
+      </div>
+      <div class="tool-btn-row">
+        <button class="tool-btn" onclick="addCard()">+ Add Card</button>
+        <button class="tool-btn" onclick="startStudy()">▶ Study Mode</button>
+      </div>
+      <div id="fcList" style="margin-top:8px"></div>
+    </div>
+    <div id="fcStudy" style="display:none;text-align:center"></div>
+  `);
+  window._cards=[];
+  window.addCard=function(){
+    const f=document.getElementById('fcFront').value.trim();
+    const b=document.getElementById('fcBack').value.trim();
+    if(!f||!b){showToast('Enter both front and back');return;}
+    window._cards.push({f,b});
+    document.getElementById('fcFront').value='';
+    document.getElementById('fcBack').value='';
+    renderCardList();
+  };
+  window.renderCardList=function(){
+    document.getElementById('fcList').innerHTML=window._cards.map((c,i)=>`<div class="output-box" style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:0.82rem"><strong style="color:var(--accent)">${c.f}</strong> → <span style="color:var(--text2)">${c.b}</span></span><button onclick="window._cards.splice(${i},1);renderCardList()" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:0.9rem">✕</button></div>`).join('');
+  };
+  let ci=0,showBack=false;
+  window.startStudy=function(){
+    if(!window._cards.length){showToast('Add at least one card');return;}
+    ci=0;showBack=false;
+    document.getElementById('fcCreate').style.display='none';
+    document.getElementById('fcStudy').style.display='block';
+    renderStudyCard();
+  };
+  window.renderStudyCard=function(){
+    const c=window._cards[ci];
+    document.getElementById('fcStudy').innerHTML=`
+      <div style="font-size:0.78rem;color:var(--text3);font-family:var(--font-mono);margin-bottom:12px">Card ${ci+1} of ${window._cards.length}</div>
+      <div onclick="showBack=!showBack;renderStudyCard()" style="background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:32px;cursor:pointer;min-height:120px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;transition:all 0.2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border2)'">
+        <div>
+          <div style="font-size:0.7rem;color:var(--text3);font-family:var(--font-mono);margin-bottom:8px">${showBack?'ANSWER':'QUESTION'} · click to flip</div>
+          <div style="font-size:1.2rem;font-weight:700;color:var(--text);font-family:var(--font-display)">${showBack?c.b:c.f}</div>
+        </div>
+      </div>
+      <div class="tool-btn-row" style="justify-content:center">
+        <button class="tool-btn" onclick="ci=Math.max(0,ci-1);showBack=false;renderStudyCard()" ${ci===0?'disabled':''}>← Prev</button>
+        <button class="tool-btn" onclick="ci=Math.min(window._cards.length-1,ci+1);showBack=false;renderStudyCard()" ${ci===window._cards.length-1?'disabled':''}>Next →</button>
+        <button class="tool-btn" onclick="document.getElementById('fcCreate').style.display='block';document.getElementById('fcStudy').style.display='none'">✕ Exit</button>
+      </div>
+    `;
+  };
+}
+
+// Init
+renderCards();
+
+// Scroll reveal
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>
