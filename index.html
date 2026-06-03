@@ -725,13 +725,13 @@ document.getElementById('globalSearch').addEventListener('input',function(){
 function openAPIModal(t){
   document.getElementById('modalIcon').textContent=t.icon;
   document.getElementById('modalTitle').textContent=t.name;
-  document.getElementById('modalSub').textContent='Backend processing required';
+  document.getElementById('modalSub').textContent='Powered by FastAPI backend';
   document.getElementById('modalBody').innerHTML=`
     <div class="coming-soon">
-      <div class="cs-icon">🚀</div>
-      <h3>FastAPI Backend Required</h3>
-      <p>This tool uses our Python/FastAPI backend for heavy file processing. It will be live once the Render deployment is set up in Phase 4.</p>
-      <div class="api-tag">PHASE 4 — COMING SOON</div>
+      <div class="cs-icon">${t.icon}</div>
+      <h3>${t.name}</h3>
+      <p>This tool is live! Upload your file below to process it via our FastAPI backend.</p>
+      <div class="api-tag">LIVE · toolforge-api-o6q8.onrender.com</div>
     </div>
   `;
   document.getElementById('modalOverlay').classList.add('open');
