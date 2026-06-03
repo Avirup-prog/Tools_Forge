@@ -5,12 +5,13 @@ python-multipart==0.0.9      # file upload support
 
 # ── PDF tools ─────────────────────────────────────────────────────────────────
 pdfplumber==0.11.0            # text/table extraction
-pypdf==4.2.0                  # merge, split, encrypt, rotate
+pypdf==3.17.4                 # merge, split, encrypt, rotate
 python-docx==1.1.2            # PDF→Word, Word→PDF helper
 reportlab==4.2.0              # PDF generation (watermark, fill-sign)
 Pillow==10.4.0               # image handling shared across PDF + Image
 pdf2image==1.17.0             # PDF→image (uses poppler)
 img2pdf==0.5.1                # Image→PDF
+
 
 # ── Image tools ───────────────────────────────────────────────────────────────
 # Pillow already listed above
