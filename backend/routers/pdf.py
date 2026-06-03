@@ -59,12 +59,36 @@ async def pdf_to_word(file: UploadFile = File(...)):
 
         with pdfplumber.open(str(src)) as pdf:
             for i, page in enumerate(pdf.pages, 1):
-                text = page.extract_text() or ""
                 doc.add_heading(f"Page {i}", level=2)
-                for para in text.split("\n"):
-                    para = para.strip()
-                    if para:
-                        doc.add_paragraph(para)
+                page_width = page.width
+                page_height = page.height
+
+                # Try to detect two-column layout
+                # Split page into left and right halves
+                left_bbox  = (0, 0, page_width * 0.45, page_height)
+                right_bbox = (page_width * 0.45, 0, page_width, page_height)
+
+                left_page  = page.crop(left_bbox)
+                right_page = page.crop(right_bbox)
+
+                left_text  = left_page.extract_text()  or ""
+                right_text = right_page.extract_text() or ""
+
+                # If both halves have content → two-column layout
+                if left_text.strip() and right_text.strip():
+                    for text_block in [left_text, right_text]:
+                        for para in text_block.split("\n"):
+                            para = para.strip()
+                            if para:
+                                doc.add_paragraph(para)
+                        doc.add_paragraph("─" * 40)  # separator between columns
+                else:
+                    # Single column — extract normally
+                    text = page.extract_text() or "(No extractable text)"
+                    for para in text.split("\n"):
+                        para = para.strip()
+                        if para:
+                            doc.add_paragraph(para)
 
                 # Tables
                 for table in page.extract_tables():
@@ -88,7 +112,6 @@ async def pdf_to_word(file: UploadFile = File(...)):
         raise tool_error(f"PDF to Word failed: {e}")
     finally:
         cleanup(src, out)
-
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 2. Word → PDF  /api/pdf/from-word
@@ -153,6 +176,7 @@ async def word_to_pdf(file: UploadFile = File(...)):
                 new_page()
 
         c.save()
+        buf.seek(0)
         data = buf.getvalue()
         return Response(
             content=data,
@@ -384,7 +408,8 @@ async def compress_pdf(
                         pass
 
         # General stream compression
-        writer.compress_identical_objects(remove_identicals=True, remove_orphans=True)
+        for page in writer.pages:
+            page.compress_content_streams()
 
         buf = io.BytesIO()
         writer.write(buf)
