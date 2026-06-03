@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- SEO -->
+<title>{{ tool.name }} — Free Online Tool | ToolForge</title>
+<meta name="description" content="{{ tool.long_desc }}">
+<meta name="keywords" content="{{ tool.tags | join(', ') }}">
+<link rel="canonical" href="{{ meta.base_url }}/tools/{{ tool.id }}.html">
+
+<!-- Open Graph -->
+<meta property="og:title" content="{{ tool.name }} — ToolForge">
+<meta property="og:description" content="{{ tool.long_desc }}">
+<meta property="og:url" content="{{ meta.base_url }}/tools/{{ tool.id }}.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{ meta.site_name }}">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="{{ tool.name }} — ToolForge">
+<meta name="twitter:description" content="{{ tool.long_desc }}">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<!-- Shared styles (built by Phase 1) -->
+<link rel="stylesheet" href="../assets/style.css">
+
+<style>
+/* ── Page-level extras ── */
+:root {
+  --cat-accent: {{ cat.accent }};
+}
+.tool-page-hero {
+  position: relative;
+  z-index: 1;
+  padding: 110px 2rem 48px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  font-family: var(--font-mono);
+  color: var(--text3);
+  margin-bottom: 24px;
+}
+.breadcrumb a { color: var(--text3); text-decoration: none; transition: color .2s; }
+.breadcrumb a:hover { color: var(--cat-accent); }
+.breadcrumb span { color: var(--text3); }
+.tool-page-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: rgba({{ cat.accent | hex_to_rgb }}, 0.12);
+  border: 1px solid rgba({{ cat.accent | hex_to_rgb }}, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+.tool-page-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 14px;
+}
+.tool-page-desc {
+  font-size: 1rem;
+  color: var(--text2);
+  line-height: 1.7;
+  max-width: 600px;
+  margin-bottom: 24px;
+}
+.tool-meta-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.pill {
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  padding: 4px 12px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  color: var(--text3);
+  background: var(--surface);
+}
+.pill.pill-badge-js   { background: rgba(52,211,153,.1);  color: #34d399; border-color: rgba(52,211,153,.2); }
+.pill.pill-badge-api  { background: rgba(251,146,60,.1);  color: #fb923c; border-color: rgba(251,146,60,.2); }
+.pill.pill-badge-ai   { background: rgba(129,140,248,.15); color: #818cf8; border-color: rgba(129,140,248,.25); }
+
+/* ── Tool workspace ── */
+.tool-workspace {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 2rem 80px;
+  position: relative;
+  z-index: 1;
+}
+.workspace-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.workspace-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  padding: 0 20px;
+  background: var(--bg2);
+}
+.workspace-tab {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text3);
+  padding: 14px 16px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  transition: color .2s, border-color .2s;
+}
+.workspace-tab.active {
+  color: var(--cat-accent);
+  border-bottom-color: var(--cat-accent);
+}
+.workspace-panel { padding: 28px; display: none; }
+.workspace-panel.active { display: block; }
+
+/* Drop zone */
+.drop-zone {
+  border: 2px dashed var(--border2);
+  border-radius: 14px;
+  padding: 56px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  position: relative;
+}
+.drop-zone:hover, .drop-zone.drag-over {
+  border-color: var(--cat-accent);
+  background: rgba(56,189,248,.03);
+}
+.drop-zone input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.drop-icon { font-size: 2.5rem; margin-bottom: 12px; }
+.drop-title { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.drop-sub   { font-size: 0.8rem; color: var(--text3); }
+.drop-sub span { color: var(--cat-accent); }
+.drop-accepts {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 14px;
+}
+.drop-accepts .ext {
+  font-size: 0.68rem;
+  font-family: var(--font-mono);
+  padding: 3px 9px;
+  border-radius: 4px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text3);
+}
+
+/* Coming soon (API tools not yet live) */
+.coming-soon-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: rgba(251,146,60,.06);
+  border: 1px solid rgba(251,146,60,.2);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 24px;
+}
+.cs-icon { font-size: 1.4rem; flex-shrink: 0; padding-top: 2px; }
+.cs-body { font-size: 0.84rem; color: var(--text2); line-height: 1.6; }
+.cs-body strong { color: var(--accent4); font-family: var(--font-mono); font-size: 0.78rem; }
+
+/* How-it-works */
+.how-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-top: 8px;
+}
+.how-step {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+}
+.how-num {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--cat-accent);
+  opacity: .4;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.how-text { font-size: 0.82rem; color: var(--text2); line-height: 1.5; }
+
+/* Related tools */
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 12px;
+}
+.related-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  text-decoration: none;
+  transition: border-color .2s, transform .2s;
+  display: block;
+}
+.related-card:hover {
+  border-color: var(--border2);
+  transform: translateY(-2px);
+}
+.related-icon { font-size: 1.4rem; margin-bottom: 8px; }
+.related-name { font-family: var(--font-display); font-size: 0.85rem; font-weight: 700; color: var(--text); }
+.related-desc { font-size: 0.75rem; color: var(--text3); margin-top: 4px; line-height: 1.4; }
+
+/* Section label */
+.section-label {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 16px;
+  margin-top: 32px;
+}
+.section-label:first-child { margin-top: 0; }
+
+/* JSON-LD is injected below */
+</style>
+</head>
+<body>
+
+<!-- NAV (identical to homepage) -->
+<nav>
+  <a href="../index.html" class="nav-logo">Tool<span>Forge</span> <span class="logo-badge">BETA</span></a>
+  <div class="nav-search">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+    </svg>
+    <input type="text" id="globalSearch" placeholder="Search 65 tools..." autocomplete="off"
+           onkeydown="if(event.key==='Enter'){window.location='../index.html?q='+encodeURIComponent(this.value)}">
+  </div>
+  <div class="nav-actions">
+    <a href="../index.html" class="btn-ghost">← All Tools</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="tool-page-hero">
+  <nav class="breadcrumb" aria-label="breadcrumb">
+    <a href="../index.html">Home</a>
+    <span>›</span>
+    <a href="../index.html#sec-{{ cat.id }}">{{ cat.label }}</a>
+    <span>›</span>
+    <span>{{ tool.name }}</span>
+  </nav>
+
+  <div class="tool-page-icon">{{ tool.icon }}</div>
+  <h1 class="tool-page-title">{{ tool.name }}</h1>
+  <p class="tool-page-desc">{{ tool.long_desc }}</p>
+
+  <div class="tool-meta-pills">
+    <span class="pill pill-badge-{{ tool.badge }}">
+      {%- if tool.badge == 'js' %}⚡ Runs in browser
+      {%- elif tool.badge == 'ai' %}✨ AI-powered
+      {%- else %}🚀 API-powered
+      {%- endif %}
+    </span>
+    <span class="pill">{{ cat.label }}</span>
+    {%- for tag in tool.tags[:4] %}
+    <span class="pill">{{ tag }}</span>
+    {%- endfor %}
+  </div>
+</section>
+
+<!-- WORKSPACE -->
+<section class="tool-workspace">
+  <div class="workspace-card">
+
+    <!-- Tabs -->
+    <div class="workspace-tabs">
+      <button class="workspace-tab active" onclick="switchTab(this,'tab-tool')">Use Tool</button>
+      <button class="workspace-tab" onclick="switchTab(this,'tab-howto')">How It Works</button>
+      {%- if tool.badge == 'api' or tool.badge == 'ai' %}
+      <button class="workspace-tab" onclick="switchTab(this,'tab-api')">API Docs</button>
+      {%- endif %}
+    </div>
+
+    <!-- USE TOOL TAB -->
+    <div class="workspace-panel active" id="tab-tool">
+      {%- if tool.badge == 'api' or tool.badge == 'ai' %}
+      <!-- API coming-soon banner -->
+      <div class="coming-soon-banner">
+        <div class="cs-icon">🔧</div>
+        <div class="cs-body">
+          <strong>PHASE 4 — BACKEND COMING SOON</strong><br>
+          This tool uses our Python / FastAPI backend hosted on Render.
+          Full functionality will be live once the backend deploys.
+          The upload UI below shows the final intended experience.
+        </div>
+      </div>
+
+      <!-- Drop zone -->
+      <div class="drop-zone" id="dropZone">
+        <input type="file"
+               accept="{{ tool.accepts | join(',') if tool.accepts else '*' }}"
+               {%- if tool.id in ['merge-pdf','collage'] %} multiple {%- endif %}
+               onchange="handleFile(this.files)">
+        <div class="drop-icon">{{ tool.icon }}</div>
+        <div class="drop-title">Drop your file here or <span style="color:var(--cat-accent)">browse</span></div>
+        <div class="drop-sub">Max 50 MB &nbsp;·&nbsp; <span>Free &amp; secure</span></div>
+        <div class="drop-accepts">
+          {%- if tool.accepts %}
+          {%- for mime in tool.accepts %}
+          <span class="ext">{{ mime | mime_to_ext }}</span>
+          {%- endfor %}
+          {%- endif %}
+        </div>
+      </div>
+
+      <!-- Progress (hidden initially) -->
+      <div id="uploadProgress" style="display:none;margin-top:20px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+          <span style="font-size:.82rem;font-family:var(--font-mono);color:var(--text2)" id="progressLabel">Uploading…</span>
+          <span style="font-size:.82rem;font-family:var(--font-mono);color:var(--cat-accent)" id="progressPct">0%</span>
+        </div>
+        <div style="background:var(--bg3);border-radius:100px;height:6px;overflow:hidden">
+          <div id="progressBar" style="height:100%;width:0%;background:var(--cat-accent);border-radius:100px;transition:width .3s"></div>
+        </div>
+      </div>
+      {%- else %}
+      <!-- Pure-JS tool: redirect to homepage modal -->
+      <div style="text-align:center;padding:48px 24px">
+        <div style="font-size:3rem;margin-bottom:16px">{{ tool.icon }}</div>
+        <h3 style="font-family:var(--font-display);font-size:1.1rem;color:var(--text);margin-bottom:10px">
+          Open in Quick Modal
+        </h3>
+        <p style="font-size:.85rem;color:var(--text3);line-height:1.6;max-width:380px;margin:0 auto 20px">
+          This tool runs entirely in your browser. Click below to launch the full interactive widget.
+        </p>
+        <a href="../index.html#{{ tool.id }}"
+           class="tool-btn"
+           onclick="localStorage.setItem('openTool','{{ tool.id }}');return true;">
+          Launch {{ tool.name }} →
+        </a>
+      </div>
+      {%- endif %}
+    </div>
+
+    <!-- HOW IT WORKS TAB -->
+    <div class="workspace-panel" id="tab-howto">
+      <div class="section-label">How it works</div>
+      <div class="how-steps">
+        {%- if tool.badge in ['api','ai'] %}
+        <div class="how-step"><div class="how-num">01</div><div class="how-text">Upload your file using the drop zone or file picker.</div></div>
+        <div class="how-step"><div class="how-num">02</div><div class="how-text">Our FastAPI backend on Render processes it using
+          {%- if tool.badge == 'ai' %} AI models (rembg / ESRGAN){%- else %} {{ 'pdfplumber, pypdf' if cat.id == 'pdf' else 'FFmpeg, pydub' if cat.id == 'media' else 'Pillow' }}{%- endif %}.</div></div>
+        <div class="how-step"><div class="how-num">03</div><div class="how-text">The processed file is returned and downloaded automatically to your device.</div></div>
+        <div class="how-step"><div class="how-num">04</div><div class="how-text">Files are deleted from the server immediately after download. Your data stays private.</div></div>
+        {%- else %}
+        <div class="how-step"><div class="how-num">01</div><div class="how-text">Type or paste your input into the tool widget.</div></div>
+        <div class="how-step"><div class="how-num">02</div><div class="how-text">Results update instantly in your browser — no server required, nothing leaves your device.</div></div>
+        <div class="how-step"><div class="how-num">03</div><div class="how-text">Copy the output or download it with one click.</div></div>
+        {%- endif %}
+      </div>
+
+      <div class="section-label" style="margin-top:28px">Technical details</div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:18px;font-family:var(--font-mono);font-size:.8rem;color:var(--text2);line-height:1.8">
+        {%- if tool.badge in ['api','ai'] %}
+        <div><span style="color:var(--text3)">Endpoint &nbsp;&nbsp;&nbsp;:</span> {{ tool.endpoint }}</div>
+        <div><span style="color:var(--text3)">Method &nbsp;&nbsp;&nbsp;&nbsp;:</span> {{ tool.method }}</div>
+        <div><span style="color:var(--text3)">Accepts &nbsp;&nbsp;&nbsp;:</span> {{ tool.accepts | join(' · ') if tool.accepts else '—' }}</div>
+        <div><span style="color:var(--text3)">Returns &nbsp;&nbsp;&nbsp;:</span> {{ tool.returns }}</div>
+        <div><span style="color:var(--text3)">Backend &nbsp;&nbsp;&nbsp;:</span> Python · FastAPI · Render</div>
+        {%- else %}
+        <div><span style="color:var(--text3)">Runtime &nbsp;&nbsp;&nbsp;:</span> Pure JavaScript (browser)</div>
+        <div><span style="color:var(--text3)">Network &nbsp;&nbsp;&nbsp;:</span> Zero — runs fully offline</div>
+        <div><span style="color:var(--text3)">Privacy &nbsp;&nbsp;&nbsp;:</span> No data sent to any server</div>
+        {%- endif %}
+        <div><span style="color:var(--text3)">Category &nbsp;&nbsp;:</span> {{ cat.label }}</div>
+        <div><span style="color:var(--text3)">Tags &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span> {{ tool.tags | join(', ') }}</div>
+      </div>
+    </div>
+
+    {%- if tool.badge in ['api','ai'] %}
+    <!-- API DOCS TAB -->
+    <div class="workspace-panel" id="tab-api">
+      <div class="section-label">REST API Reference</div>
+      <p style="font-size:.84rem;color:var(--text2);line-height:1.7;margin-bottom:20px">
+        Base URL: <code style="font-family:var(--font-mono);color:var(--accent)">{{ meta.api_base }}</code>
+      </p>
+
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;overflow:hidden">
+        <!-- Endpoint header -->
+        <div style="display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--border);background:var(--bg2)">
+          <span style="font-family:var(--font-mono);font-size:.72rem;padding:3px 9px;border-radius:4px;background:rgba(52,211,153,.12);color:#34d399;border:1px solid rgba(52,211,153,.2)">{{ tool.method }}</span>
+          <code style="font-family:var(--font-mono);font-size:.82rem;color:var(--accent)">{{ tool.endpoint }}</code>
+        </div>
+        <!-- cURL example -->
+        <pre style="padding:18px;font-family:var(--font-mono);font-size:.78rem;color:var(--text2);line-height:1.7;overflow-x:auto;margin:0">curl -X POST \
+  {{ meta.api_base }}{{ tool.endpoint }} \
+  -F "file=@your_file{{ tool.accepts[0] | mime_to_ext if tool.accepts else '' }}" \
+  --output result{{ tool.returns | mime_to_ext if tool.returns not in ['application/json','application/zip'] else '.zip' }}</pre>
+      </div>
+
+      <div class="section-label" style="margin-top:24px">Response</div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:18px;font-family:var(--font-mono);font-size:.78rem;color:var(--text2);line-height:1.7">
+        Content-Type: {{ tool.returns }}<br>
+        Body: binary file stream (download directly)<br><br>
+        On error:<br>
+        {"detail": "error message", "status": 4xx}
+      </div>
+    </div>
+    {%- endif %}
+
+  </div><!-- /workspace-card -->
+
+  <!-- RELATED TOOLS -->
+  {%- if related_tools %}
+  <div class="section-label" style="margin-top:48px;margin-bottom:16px">Related tools</div>
+  <div class="related-grid">
+    {%- for rt in related_tools %}
+    <a href="{{ rt.id }}.html" class="related-card">
+      <div class="related-icon">{{ rt.icon }}</div>
+      <div class="related-name">{{ rt.name }}</div>
+      <div class="related-desc">{{ rt.desc }}</div>
+    </a>
+    {%- endfor %}
+  </div>
+  {%- endif %}
+
+</section><!-- /tool-workspace -->
+
+<footer>
+  <div class="footer-logo">Tool<span>Forge</span></div>
+  <p>65 free tools · no signup · no watermarks · built with ❤️</p>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// Tab switcher
+function switchTab(btn, panelId) {
+  document.querySelectorAll('.workspace-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.workspace-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+
+// Drop zone drag feedback
+const dz = document.getElementById('dropZone');
+if (dz) {
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+  dz.addEventListener('drop', e => {
+    e.preventDefault(); dz.classList.remove('drag-over');
+    handleFile(e.dataTransfer.files);
+  });
+}
+
+function handleFile(files) {
+  if (!files || !files.length) return;
+  const prog = document.getElementById('uploadProgress');
+  const bar  = document.getElementById('progressBar');
+  const pct  = document.getElementById('progressPct');
+  const lbl  = document.getElementById('progressLabel');
+  if (!prog) return;
+  prog.style.display = 'block';
+  lbl.textContent = `Ready: ${files[0].name}`;
+  // Simulate progress UI (real upload wired up in Phase 4)
+  let p = 0;
+  const iv = setInterval(() => {
+    p = Math.min(p + Math.random() * 18, 95);
+    bar.style.width = p + '%';
+    pct.textContent = Math.round(p) + '%';
+    if (p >= 95) {
+      clearInterval(iv);
+      lbl.textContent = '⏳ Awaiting backend (Phase 4)…';
+      showToast('Backend not yet live — Phase 4 coming soon!');
+    }
+  }, 180);
+}
+
+// Auto-open tool modal if redirected from index
+window.addEventListener('load', () => {
+  const id = localStorage.getItem('openTool');
+  if (id === '{{ tool.id }}') {
+    localStorage.removeItem('openTool');
+    // No-op on dedicated page; modal lives on homepage
+  }
+});
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+
+<!-- JSON-LD structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "{{ tool.name }}",
+  "description": "{{ tool.long_desc }}",
+  "url": "{{ meta.base_url }}/tools/{{ tool.id }}.html",
+  "applicationCategory": "UtilityApplication",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript"
+}
+</script>
+
+</body>
+</html>
