@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: toolforge-api
+    env: python
+    plan: free                      # upgrade to starter ($7/mo) to avoid cold starts
+    buildCommand: |
+      pip install -r requirements.txt
+      # Install system dependencies for pdf2image, ffmpeg, poppler
+      apt-get install -y poppler-utils ffmpeg libgl1-mesa-glx 2>/dev/null || true
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+    healthCheckPath: /health
+    autoDeploy: true
