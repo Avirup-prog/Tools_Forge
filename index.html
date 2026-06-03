@@ -676,7 +676,8 @@ function renderCards(){
         card.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%');
       });
      card.addEventListener('click',()=>{
-        window.location.href = `tools/${t.id}.html`;
+    if(isAPI) openAPIModal(t);
+    else openTool(t.id);
 });
       grid.appendChild(card);
     });
