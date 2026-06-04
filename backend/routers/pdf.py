@@ -61,12 +61,7 @@ async def pdf_to_word(file: UploadFile = File(...)):
         cv.convert(str(out))
         cv.close()
 
-        return FileResponse(
-            cv = Converter(str(src))
-            cv.convert(str(out))
-            cv.close()
-
-            data = out.read_bytes()
+        data = out.read_bytes()
 
         return Response(
             content=data,
@@ -74,12 +69,12 @@ async def pdf_to_word(file: UploadFile = File(...)):
             headers={
                 "Content-Disposition":
                 f'attachment; filename="{Path(file.filename).stem}.docx"'
-    },
-)
+            },
         )
 
     except Exception as e:
         raise tool_error(f"PDF to Word failed: {e}")
+
     finally:
         cleanup(src, out)
 
