@@ -31,3 +31,4 @@ pdf2docx
 openpyxl
 numpy<2
 python-pptx
+PyMuPDF
