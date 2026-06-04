@@ -844,9 +844,6 @@ window.handleModalFiles = function(fileList) {
   }
 
   document.getElementById('modalProgress').style.display = 'block';
-  const files = Array.from(fileList);
-  if(!files.length) return;
-  document.getElementById('modalProgress').style.display = 'block';
   document.getElementById('modalResult').innerHTML = '';
 
  ToolForgeAPI.upload({
