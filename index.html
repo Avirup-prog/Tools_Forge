@@ -761,7 +761,9 @@ function openAPIModal(t){
   document.getElementById('modalIcon').textContent = t.icon;
   document.getElementById('modalTitle').textContent = t.name;
   document.getElementById('modalSub').textContent = 'Powered by FastAPI backend';
-  document.getElementById('modalBody').innerHTML = `${t.id === 'word-to-pdf' ? `
+  document.getElementById('modalBody').innerHTML = `
+
+${t.id === 'word-to-pdf' ? `
 <div style="
   margin-bottom:16px;
   padding:12px;
@@ -777,6 +779,23 @@ function openAPIModal(t){
   columns, text boxes, images, tables, and advanced layouts may not be
   converted accurately.
 </div>
+` : ''}
+
+${t.id === 'add-password' ? `
+<input
+  type="password"
+  id="pdfPassword"
+  placeholder="Enter PDF password"
+  style="
+    width:100%;
+    padding:12px;
+    margin-bottom:16px;
+    border-radius:10px;
+    border:1px solid var(--border2);
+    background:var(--bg2);
+    color:var(--text);
+  "
+>
 ` : ''}
     <div id="dropZone" style="border:2px dashed var(--border2);border-radius:14px;padding:40px;text-align:center;cursor:pointer;transition:all 0.2s" 
       onclick="document.getElementById('fileInput').click()"
