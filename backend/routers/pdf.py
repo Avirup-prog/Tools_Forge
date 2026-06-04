@@ -397,72 +397,31 @@ async def split_pdf(
 @router.post("/compress", summary="Reduce PDF file size")
 async def compress_pdf(
     file: UploadFile = File(...),
-    quality: int = Form(75),  # JPEG quality 1-95
+    quality: int = Form(75),
 ):
     require_mime(file, "pdf")
 
     src = await save_upload(file, ".pdf")
-    out = temp_path(".pdf")
 
     try:
-        import fitz  # PyMuPDF
-        from PIL import Image
+        reader = PdfReader(str(src))
+        writer = PdfWriter()
 
-        pdf = fitz.open(str(src))
+        for page in reader.pages:
+            writer.add_page(page)
 
-        image_paths = []
-
-        for page_num in range(len(pdf)):
-            page = pdf[page_num]
-
-            # Render page as image
-            pix = page.get_pixmap(
-                matrix=fitz.Matrix(1.5, 1.5),
-                alpha=False
-            )
-
-            img_path = temp_path(".jpg")
-
-            img = Image.frombytes(
-                "RGB",
-                [pix.width, pix.height],
-                pix.samples
-            )
-
-            img.save(
-                str(img_path),
-                "JPEG",
-                quality=max(1, min(95, quality)),
-                optimize=True
-            )
-
-            img.close()
-            image_paths.append(str(img_path))
-
-        pdf.close()
-
-        # Rebuild PDF from compressed JPEGs
-        images = [Image.open(p).convert("RGB") for p in image_paths]
-
-        images[0].save(
-            str(out),
-            save_all=True,
-            append_images=images[1:]
-        )
-
-        for img in images:
-            img.close()
-
-        for p in image_paths:
+        # Compress content streams where possible
+        for page in writer.pages:
             try:
-                Path(p).unlink(missing_ok=True)
+                page.compress_content_streams()
             except Exception:
                 pass
 
-        data = out.read_bytes()
+        buf = io.BytesIO()
+        writer.write(buf)
 
         return Response(
-            content=data,
+            content=buf.getvalue(),
             media_type="application/pdf",
             headers={
                 "Content-Disposition":
@@ -474,7 +433,7 @@ async def compress_pdf(
         raise tool_error(f"Compress failed: {e}")
 
     finally:
-        cleanup(src, out)
+        cleanup(src)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
