@@ -216,49 +216,65 @@ async def pdf_to_excel(file: UploadFile = File(...)):
 @router.post("/to-ppt", summary="Convert PDF pages to PPTX slides")
 async def pdf_to_ppt(file: UploadFile = File(...)):
     require_mime(file, "pdf")
+
     src = await save_upload(file, ".pdf")
     out = temp_path(".pptx")
 
     try:
+        import fitz  # PyMuPDF
         from pptx import Presentation
-        from pptx.util import Inches, Pt
-        from pptx.enum.text import PP_ALIGN
+        from pptx.util import Inches
 
         prs = Presentation()
         prs.slide_width = Inches(10)
         prs.slide_height = Inches(7.5)
-        blank_layout = prs.slide_layouts[6]   # blank
 
-        with pdfplumber.open(str(src)) as pdf:
-            for i, page in enumerate(pdf.pages, 1):
-                slide = prs.slides.add_slide(blank_layout)
-                text = page.extract_text() or f"(Page {i} — no extractable text)"
+        blank_layout = prs.slide_layouts[6]
 
-                txBox = slide.shapes.add_textbox(Inches(0.5), Inches(0.5), Inches(9), Inches(6.5))
-                tf = txBox.text_frame
-                tf.word_wrap = True
+        pdf = fitz.open(str(src))
 
-                lines = [l.strip() for l in text.split("\n") if l.strip()]
-                for j, line in enumerate(lines):
-                    if j == 0:
-                        p = tf.paragraphs[0]
-                    else:
-                        p = tf.add_paragraph()
-                    run = p.add_run()
-                    run.text = line
-                    run.font.size = Pt(11 if j > 0 else 14)
-                    if j == 0:
-                        run.font.bold = True
+        for page_num in range(len(pdf)):
+            page = pdf[page_num]
+
+            # Render PDF page as high-quality image
+            pix = page.get_pixmap(
+                matrix=fitz.Matrix(2, 2),
+                alpha=False
+            )
+
+            img_path = temp_path(".png")
+            pix.save(str(img_path))
+
+            slide = prs.slides.add_slide(blank_layout)
+
+            slide.shapes.add_picture(
+                str(img_path),
+                0,
+                0,
+                width=prs.slide_width,
+                height=prs.slide_height,
+            )
+
+            cleanup(img_path)
+
+        pdf.close()
 
         prs.save(str(out))
+
         data = out.read_bytes()
+
         return Response(
             content=data,
             media_type="application/vnd.openxmlformats-officedocument.presentationml.presentation",
-            headers={"Content-Disposition": f'attachment; filename="{Path(file.filename).stem}.pptx"'},
+            headers={
+                "Content-Disposition":
+                f'attachment; filename="{Path(file.filename).stem}.pptx"'
+            },
         )
+
     except Exception as e:
         raise tool_error(f"PDF to PPT failed: {e}")
+
     finally:
         cleanup(src, out)
 
