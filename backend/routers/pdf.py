@@ -397,43 +397,84 @@ async def split_pdf(
 @router.post("/compress", summary="Reduce PDF file size")
 async def compress_pdf(
     file: UploadFile = File(...),
-    quality: int = Form(75),   # image quality 1-95
+    quality: int = Form(75),  # JPEG quality 1-95
 ):
     require_mime(file, "pdf")
+
     src = await save_upload(file, ".pdf")
+    out = temp_path(".pdf")
 
     try:
-        reader = PdfReader(str(src))
-        writer = PdfWriter()
+        import fitz  # PyMuPDF
+        from PIL import Image
 
-        for page in reader.pages:
-            writer.add_page(page)
+        pdf = fitz.open(str(src))
 
-        # Compress embedded images in each page
-        for page in writer.pages:
-            for img_name in list(page.get("/Resources", {}).get("/XObject", {}).keys()):
-                xobj = page["/Resources"]["/XObject"][img_name]
-                if xobj.get("/Subtype") == "/Image":
-                    try:
-                        xobj.compress_content_streams()
-                    except Exception:
-                        pass
+        image_paths = []
 
-        # General stream compression
-        for page in writer.pages:
-            page.compress_content_streams()
+        for page_num in range(len(pdf)):
+            page = pdf[page_num]
 
-        buf = io.BytesIO()
-        writer.write(buf)
-        return Response(
-            content=buf.getvalue(),
-            media_type="application/pdf",
-            headers={"Content-Disposition": f'attachment; filename="{Path(file.filename).stem}_compressed.pdf"'},
+            # Render page as image
+            pix = page.get_pixmap(
+                matrix=fitz.Matrix(1.5, 1.5),
+                alpha=False
+            )
+
+            img_path = temp_path(".jpg")
+
+            img = Image.frombytes(
+                "RGB",
+                [pix.width, pix.height],
+                pix.samples
+            )
+
+            img.save(
+                str(img_path),
+                "JPEG",
+                quality=max(1, min(95, quality)),
+                optimize=True
+            )
+
+            img.close()
+            image_paths.append(str(img_path))
+
+        pdf.close()
+
+        # Rebuild PDF from compressed JPEGs
+        images = [Image.open(p).convert("RGB") for p in image_paths]
+
+        images[0].save(
+            str(out),
+            save_all=True,
+            append_images=images[1:]
         )
+
+        for img in images:
+            img.close()
+
+        for p in image_paths:
+            try:
+                Path(p).unlink(missing_ok=True)
+            except Exception:
+                pass
+
+        data = out.read_bytes()
+
+        return Response(
+            content=data,
+            media_type="application/pdf",
+            headers={
+                "Content-Disposition":
+                f'attachment; filename="{Path(file.filename).stem}_compressed.pdf"'
+            },
+        )
+
     except Exception as e:
         raise tool_error(f"Compress failed: {e}")
+
     finally:
-        cleanup(src)
+        cleanup(src, out)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
