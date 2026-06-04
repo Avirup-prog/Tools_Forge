@@ -57,9 +57,11 @@ async def pdf_to_word(file: UploadFile = File(...)):
     out = temp_path(".docx")
 
     try:
-        cv = Converter(str(src))
-        cv.convert(str(out))
-        cv.close()
+        cv.convert(
+            str(out),
+            start=0,
+            end=None
+)
 
         data = out.read_bytes()
 
