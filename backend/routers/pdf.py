@@ -38,6 +38,8 @@ from reportlab.lib.colors import Color, black
 from docx import Document
 from PIL import Image as PILImage
 import img2pdf
+from pdf2docx import Converter
+from fastapi.responses import FileResponse
 
 from utils.helpers import save_upload, temp_path, cleanup, tmp_scope, require_mime, tool_error
 
@@ -50,68 +52,36 @@ router = APIRouter()
 @router.post("/to-word", summary="Convert PDF to DOCX")
 async def pdf_to_word(file: UploadFile = File(...)):
     require_mime(file, "pdf")
+
     src = await save_upload(file, ".pdf")
     out = temp_path(".docx")
 
     try:
-        doc = Document()
-        doc.add_heading("Converted from PDF", 0)
+        cv = Converter(str(src))
+        cv.convert(str(out))
+        cv.close()
 
-        with pdfplumber.open(str(src)) as pdf:
-            for i, page in enumerate(pdf.pages, 1):
-                doc.add_heading(f"Page {i}", level=2)
-                page_width = page.width
-                page_height = page.height
+        return FileResponse(
+            cv = Converter(str(src))
+            cv.convert(str(out))
+            cv.close()
 
-                # Try to detect two-column layout
-                # Split page into left and right halves
-                left_bbox  = (0, 0, page_width * 0.45, page_height)
-                right_bbox = (page_width * 0.45, 0, page_width, page_height)
+            data = out.read_bytes()
 
-                left_page  = page.crop(left_bbox)
-                right_page = page.crop(right_bbox)
-
-                left_text  = left_page.extract_text()  or ""
-                right_text = right_page.extract_text() or ""
-
-                # If both halves have content → two-column layout
-                if left_text.strip() and right_text.strip():
-                    for text_block in [left_text, right_text]:
-                        for para in text_block.split("\n"):
-                            para = para.strip()
-                            if para:
-                                doc.add_paragraph(para)
-                        doc.add_paragraph("─" * 40)  # separator between columns
-                else:
-                    # Single column — extract normally
-                    text = page.extract_text() or "(No extractable text)"
-                    for para in text.split("\n"):
-                        para = para.strip()
-                        if para:
-                            doc.add_paragraph(para)
-
-                # Tables
-                for table in page.extract_tables():
-                    if not table:
-                        continue
-                    t = doc.add_table(rows=len(table), cols=max(len(r) for r in table))
-                    t.style = "Table Grid"
-                    for r_idx, row in enumerate(table):
-                        for c_idx, cell in enumerate(row):
-                            if c_idx < len(t.rows[r_idx].cells):
-                                t.rows[r_idx].cells[c_idx].text = str(cell or "")
-
-        doc.save(str(out))
-        data = out.read_bytes()
         return Response(
             content=data,
             media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            headers={"Content-Disposition": f'attachment; filename="{Path(file.filename).stem}.docx"'},
+            headers={
+                "Content-Disposition":
+                f'attachment; filename="{Path(file.filename).stem}.docx"'
+    },
+)
         )
+
     except Exception as e:
         raise tool_error(f"PDF to Word failed: {e}")
     finally:
-        cleanup(src, out)
+        cleanup(src)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 2. Word → PDF  /api/pdf/from-word
