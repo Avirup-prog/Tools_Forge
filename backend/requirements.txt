@@ -27,5 +27,6 @@ pydub==0.25.1
 httpx==0.27.0                 # async HTTP (URL shortener)
 python-slugify==8.0.4
 aiofiles==23.2.1
+pdf2docx
 numpy<2
 python-pptx
