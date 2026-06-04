@@ -60,7 +60,6 @@ async def pdf_to_word(file: UploadFile = File(...)):
         cv = Converter(str(src))
         cv.convert(str(out))
         cv.close()
-)
 
         data = out.read_bytes()
 
