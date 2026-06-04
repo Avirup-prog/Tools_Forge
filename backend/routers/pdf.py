@@ -222,11 +222,14 @@ async def pdf_to_ppt(file: UploadFile = File(...)):
 
     try:
         import fitz  # PyMuPDF
+        from PIL import Image
         from pptx import Presentation
         from pptx.util import Inches
 
         prs = Presentation()
-        prs.slide_width = Inches(10)
+
+        # Modern widescreen format
+        prs.slide_width = Inches(13.333)
         prs.slide_height = Inches(7.5)
 
         blank_layout = prs.slide_layouts[6]
@@ -236,9 +239,9 @@ async def pdf_to_ppt(file: UploadFile = File(...)):
         for page_num in range(len(pdf)):
             page = pdf[page_num]
 
-            # Render PDF page as high-quality image
+            # Higher quality rendering
             pix = page.get_pixmap(
-                matrix=fitz.Matrix(2, 2),
+                matrix=fitz.Matrix(3, 3),
                 alpha=False
             )
 
@@ -247,14 +250,33 @@ async def pdf_to_ppt(file: UploadFile = File(...)):
 
             slide = prs.slides.add_slide(blank_layout)
 
-            slide.shapes.add_picture(
-                str(img_path),
-                0,
-                0,
-                width=prs.slide_width,
-                height=prs.slide_height,
+            # Preserve aspect ratio
+            img = Image.open(str(img_path))
+            img_w, img_h = img.size
+
+            slide_w = prs.slide_width
+            slide_h = prs.slide_height
+
+            scale = min(
+                slide_w / img_w,
+                slide_h / img_h
             )
 
+            new_w = int(img_w * scale)
+            new_h = int(img_h * scale)
+
+            left = int((slide_w - new_w) / 2)
+            top = int((slide_h - new_h) / 2)
+
+            slide.shapes.add_picture(
+                str(img_path),
+                left,
+                top,
+                width=new_w,
+                height=new_h,
+            )
+
+            img.close()
             cleanup(img_path)
 
         pdf.close()
