@@ -81,7 +81,7 @@ async def pdf_to_word(file: UploadFile = File(...)):
     except Exception as e:
         raise tool_error(f"PDF to Word failed: {e}")
     finally:
-        cleanup(src)
+        cleanup(src, out)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 2. Word → PDF  /api/pdf/from-word
