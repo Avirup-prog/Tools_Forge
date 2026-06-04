@@ -57,10 +57,20 @@ async def pdf_to_word(file: UploadFile = File(...)):
     out = temp_path(".docx")
 
     try:
+        # Convert PDF to DOCX
         cv = Converter(str(src))
         cv.convert(str(out))
         cv.close()
 
+        # Optional cleanup of paragraph spacing
+        doc = Document(str(out))
+        for para in doc.paragraphs:
+            fmt = para.paragraph_format
+            fmt.space_before = 0
+            fmt.space_after = 0
+        doc.save(str(out))
+
+        # Return DOCX file
         data = out.read_bytes()
 
         return Response(
@@ -77,7 +87,6 @@ async def pdf_to_word(file: UploadFile = File(...)):
 
     finally:
         cleanup(src, out)
-
 # ─────────────────────────────────────────────────────────────────────────────
 # 2. Word → PDF  /api/pdf/from-word
 # ─────────────────────────────────────────────────────────────────────────────
