@@ -761,7 +761,23 @@ function openAPIModal(t){
   document.getElementById('modalIcon').textContent = t.icon;
   document.getElementById('modalTitle').textContent = t.name;
   document.getElementById('modalSub').textContent = 'Powered by FastAPI backend';
-  document.getElementById('modalBody').innerHTML = `
+  document.getElementById('modalBody').innerHTML = `${t.id === 'word-to-pdf' ? `
+<div style="
+  margin-bottom:16px;
+  padding:12px;
+  border-radius:10px;
+  background:rgba(251,146,60,0.08);
+  border:1px solid rgba(251,146,60,0.25);
+  color:var(--accent4);
+  font-size:0.85rem;
+  line-height:1.5;
+">
+  ⚠️ <strong>Word to PDF is currently in beta.</strong><br>
+  Basic documents work well, but complex formatting such as resumes,
+  columns, text boxes, images, tables, and advanced layouts may not be
+  converted accurately.
+</div>
+` : ''}
     <div id="dropZone" style="border:2px dashed var(--border2);border-radius:14px;padding:40px;text-align:center;cursor:pointer;transition:all 0.2s" 
       onclick="document.getElementById('fileInput').click()"
       ondragover="event.preventDefault();this.style.borderColor='var(--accent)'"
