@@ -833,13 +833,32 @@ window.handleModalFile = function(e) {
 window.handleModalFiles = function(fileList) {
   const files = Array.from(fileList);
   if(!files.length) return;
+
+  if (
+    window._modalEndpoint === '/api/pdf/encrypt' &&
+    !document.getElementById('pdfPassword')?.value.trim()
+  ) {
+    document.getElementById('modalResult').innerHTML =
+      '<div style="text-align:center;padding:16px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:12px;color:#ef4444">❌ Please enter a password first.</div>';
+    return;
+  }
+
+  document.getElementById('modalProgress').style.display = 'block';
+  const files = Array.from(fileList);
+  if(!files.length) return;
   document.getElementById('modalProgress').style.display = 'block';
   document.getElementById('modalResult').innerHTML = '';
 
-  ToolForgeAPI.upload({
-    endpoint: window._modalEndpoint,
-    file: window._modalMulti ? null : files[0],
-    files: window._modalMulti ? files : null,
+ ToolForgeAPI.upload({
+  endpoint: window._modalEndpoint,
+  file: window._modalMulti ? null : files[0],
+  files: window._modalMulti ? files : null,
+
+  fields: window._modalEndpoint === '/api/pdf/encrypt'
+    ? {
+        password: document.getElementById('pdfPassword')?.value || ''
+      }
+    : {},
     onProgress: (pct) => {
       if(pct === -1){
         document.getElementById('modalProgressLabel').textContent = 'Still processing... (server warming up)';
