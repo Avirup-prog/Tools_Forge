@@ -879,7 +879,7 @@ window.handleModalFiles = function(fileList) {
   if(!files.length) return;
 
   if (
-    window._modalEndpoint === '/api/pdf/encrypt' &&
+    window._modalEndpoint === '/api/pdf/encrypt' || window._modalEndpoint === '/api/pdf/decrypt' &&
     !document.getElementById('pdfPassword')?.value.trim()
   ) {
     document.getElementById('modalResult').innerHTML =
@@ -895,7 +895,9 @@ window.handleModalFiles = function(fileList) {
   file: window._modalMulti ? null : files[0],
   files: window._modalMulti ? files : null,
 
-  fields: window._modalEndpoint === '/api/pdf/encrypt'
+  fields:
+  window._modalEndpoint === '/api/pdf/encrypt' ||
+  window._modalEndpoint === '/api/pdf/decrypt'
     ? {
         password: document.getElementById('pdfPassword')?.value || ''
       }
